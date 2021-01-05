@@ -24,7 +24,7 @@ const app = async () => {
     const slackWebhookUrl = core.getInput('slack-webhook-url');
     const githubRunId = core.getInput('github-run-id')
 
-    console.log(`Hello ${githubToken}, ${slackWebhookUrl}, ${githubRunId}!`);
+    console.log(`Input values ${githubToken}, ${slackWebhookUrl}, ${githubRunId}!`);
     const result = `${githubToken}, ${slackWebhookUrl}, ${githubRunId}`
     core.setOutput("result", result);
     // Get the JSON webhook payload for the event that triggered the workflow.
