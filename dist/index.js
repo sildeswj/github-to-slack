@@ -20,7 +20,6 @@ const { getDataFromUser } = __webpack_require__(686);
 
 const app = async () => {
   try {
-    // `who-to-greet` input defined in action metadata file
     const githubToken = core.getInput('github-token');
     const slackWebhookUrl = core.getInput('slack-webhook-url');
     const githubRunId = core.getInput('github-run-id')
