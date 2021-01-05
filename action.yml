@@ -9,6 +9,9 @@ inputs:
     required: true
   github-run-id:
     required: true
+  user-data:
+    required: true
+    default: ".github/user-data.yml"
 outputs:
   result: # id of output
     description: "result"
