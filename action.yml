@@ -11,9 +11,6 @@ inputs:
     required: true
   user-data:
     required: true
-    default: ".github/user-data.yml"
-  user-data2:
-    required: true
 outputs:
   result: # id of output
     description: "result"
