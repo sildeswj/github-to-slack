@@ -2,24 +2,42 @@ module.exports =
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 686:
+/***/ ((__unused_webpack_module, exports) => {
+
+exports.getDataFromUser = async () => {
+  return true;
+}
+
+/***/ }),
+
 /***/ 932:
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
 const core = __webpack_require__(186);
 const github = __webpack_require__(438);
+const { getDataFromUser } = __webpack_require__(686);
 
-try {
-  // `who-to-greet` input defined in action metadata file
-  const nameToGreet = core.getInput('who-to-greet');
-  console.log(`Hello ${nameToGreet}!`);
-  const time = (new Date()).toTimeString();
-  core.setOutput("time", time);
-  // Get the JSON webhook payload for the event that triggered the workflow
-  const payload = JSON.stringify(github.context.payload, undefined, 2)
-  console.log(`The event payload: ${payload}`);
-} catch (error) {
-  core.setFailed(error.message);
+const app = async () => {
+  try {
+    // `who-to-greet` input defined in action metadata file
+    const githubToken = core.getInput('github-token');
+    const slackWebhookUrl = core.getInput('slack-webhook-url');
+    const githubRunId = core.getInput('github-run-id')
+
+    console.log(`Hello ${githubToken}, ${slackWebhookUrl}, ${githubRunId}!`);
+    const result = `${githubToken}, ${slackWebhookUrl}, ${githubRunId}`
+    core.setOutput("result", result);
+    // Get the JSON webhook payload for the event that triggered the workflow.
+    const payload = JSON.stringify(github.context.payload, undefined, 2)
+    console.log(`The event payload: ${payload}`);
+
+  } catch (error) {
+    core.setFailed(error.message);
+  }
 }
+
+app()
 
 /***/ }),
 
