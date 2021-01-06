@@ -7,7 +7,7 @@ module.exports =
 
 const core = __webpack_require__(186);
 const github = __webpack_require__(438);
-const { getReviewer } = __webpack_require__(738);
+const { getReviewer } = __webpack_require__(564);
 
 const app = async () => {
   try {
@@ -34,24 +34,40 @@ app()
 
 /***/ }),
 
-/***/ 738:
+/***/ 564:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
+// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "getReviewer": () => /* binding */ getReviewer
-/* harmony export */ });
-/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(438);
-/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_0__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, {
+  "getReviewer": () => /* binding */ getReviewer
+});
+
+// EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
+var github = __webpack_require__(438);
+// CONCATENATED MODULE: ./modules/constants.js
+const REVIEW_REQUESTED = 'review_requested'
+// CONCATENATED MODULE: ./modules/github.js
+
 
 
 const getReviewer = async () => {
-  console.log('context: ', _actions_github__WEBPACK_IMPORTED_MODULE_0__.context);
-  console.log('payload: ', _actions_github__WEBPACK_IMPORTED_MODULE_0__.context.payload);
-  console.log('pull_request: ', _actions_github__WEBPACK_IMPORTED_MODULE_0__.context.payload.pull_request);
-  // const { Context } = context
-  // console.log('Context: ', Context);
+  // console.log('context: ', context);
+  // console.log('payload: ', context.payload);
+  // console.log('pull_request: ', context.payload.pull_request);
+
+  const { payload } = github.context
+  if (payload.action === REVIEW_REQUESTED) {
+    const pullRequest = github.context.payload.pull_request;
+    if (pullRequest && pullRequest.requested_reviewers) {
+      const reviewers = pullRequest.requested_reviewers;
+      console.log('reviewers: ', reviewers);
+
+    }
+  }
   return true;
 }
 
@@ -5968,18 +5984,6 @@ module.exports = require("zlib");;
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => module['default'] :
-/******/ 				() => module;
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
