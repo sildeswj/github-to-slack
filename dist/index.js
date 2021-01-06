@@ -20,7 +20,7 @@ const app = async () => {
     console.log(`Input values ${githubToken}, ${slackWebhookUrl}, ${githubRunId}, ${userData}, ${userData2}!`);
     const result = `${githubToken}, ${slackWebhookUrl}, ${githubRunId}`
 
-    getReviewer();
+    getReviewer({ userData });
     // Get the JSON webhook payload for the event that triggered the workflow.
     const payload = JSON.stringify(github.context.payload, undefined, 2)
     console.log(`The event payload: ${payload}`);
@@ -54,7 +54,7 @@ const REVIEW_REQUESTED = 'review_requested'
 
 
 
-const getReviewer = async () => {
+const getReviewer = async ({ userData }) => {
   // console.log('context: ', context);
   // console.log('payload: ', context.payload);
   // console.log('pull_request: ', context.payload.pull_request);
@@ -65,6 +65,8 @@ const getReviewer = async () => {
     if (pullRequest && pullRequest.requested_reviewers) {
       const reviewers = pullRequest.requested_reviewers;
       console.log('reviewers: ', reviewers);
+      console.log('userData: ', userData);
+      console.log('me: ', userData.sildeswj);
       return true
     }
   }
