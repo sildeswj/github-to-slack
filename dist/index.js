@@ -47,9 +47,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const getReviewer = async () => {
-  // console.log('context: ', context);
-  const { Context } = _actions_github__WEBPACK_IMPORTED_MODULE_0__.context
-  console.log('Context: ', Context);
+  console.log('context: ', _actions_github__WEBPACK_IMPORTED_MODULE_0__.context);
+  // const { Context } = context
+  // console.log('Context: ', Context);
   return true;
 }
 
