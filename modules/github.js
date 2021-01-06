@@ -12,7 +12,7 @@ export const getReviewer = async () => {
     if (pullRequest && pullRequest.requested_reviewers) {
       const reviewers = pullRequest.requested_reviewers;
       console.log('reviewers: ', reviewers);
-
+      return true
     }
   }
   return true;
