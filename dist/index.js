@@ -48,6 +48,8 @@ __webpack_require__.r(__webpack_exports__);
 
 const getReviewer = async () => {
   console.log('context: ', _actions_github__WEBPACK_IMPORTED_MODULE_0__.context);
+  console.log('payload: ', _actions_github__WEBPACK_IMPORTED_MODULE_0__.context.payload);
+  console.log('pull_request: ', _actions_github__WEBPACK_IMPORTED_MODULE_0__.context.payload.pull_request);
   // const { Context } = context
   // console.log('Context: ', Context);
   return true;
