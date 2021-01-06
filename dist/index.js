@@ -20,7 +20,6 @@ const app = async () => {
     console.log(`Input values ${githubToken}, ${slackWebhookUrl}, ${githubRunId}, ${userData}, ${userData2}!`);
     const result = `${githubToken}, ${slackWebhookUrl}, ${githubRunId}`
 
-    core.setOutput("github::: ", github);
     getReviewer();
     // Get the JSON webhook payload for the event that triggered the workflow.
     const payload = JSON.stringify(github.context.payload, undefined, 2)
@@ -48,7 +47,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const getReviewer = async () => {
-  console.log('context: ', _actions_github__WEBPACK_IMPORTED_MODULE_0__.context);
+  // console.log('context: ', context);
+  const { Context } = _actions_github__WEBPACK_IMPORTED_MODULE_0__.context
+  console.log('debug: ', Context.pull_request.requested_reviewers);
   return true;
 }
 

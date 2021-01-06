@@ -13,7 +13,6 @@ const app = async () => {
     console.log(`Input values ${githubToken}, ${slackWebhookUrl}, ${githubRunId}, ${userData}, ${userData2}!`);
     const result = `${githubToken}, ${slackWebhookUrl}, ${githubRunId}`
 
-    core.setOutput("github::: ", github);
     getReviewer();
     // Get the JSON webhook payload for the event that triggered the workflow.
     const payload = JSON.stringify(github.context.payload, undefined, 2)
