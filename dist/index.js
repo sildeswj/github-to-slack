@@ -101,6 +101,7 @@ const app = async () => {
     console.log(`The event payload: ${payload}`);
 
   } catch (error) {
+    console.error('error: ', error);
     core_default().setFailed(error.message);
   }
 }
