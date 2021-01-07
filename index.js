@@ -8,7 +8,7 @@ const app = async () => {
     // const githubRunId = core.getInput('github-run-id');
     let userData = core.getInput('user-data');
     userData = JSON.parse(userData)
-    getReviewer({ userData, slackWebhookUrl });
+    getReviewer({ userData });
   } catch (error) {
     core.setFailed(error);
   }
