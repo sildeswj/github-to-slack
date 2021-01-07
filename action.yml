@@ -1,5 +1,7 @@
 name: "Pull Request to Slack"
 description: "Pull request reviewer will be mentioned on slack channel"
+icon: "bell"
+color: "orange"
 inputs:
   github-token: # id of input
     description: "github-token"
