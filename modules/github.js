@@ -28,6 +28,7 @@ export const getReviewer = async ({ userData }) => {
           Contents:
           ${pullRequest.body}
         `
+        const contents = "```" + pullRequest.body + "```"
         const params = {
           slackUserIds,
           text: "",
@@ -57,8 +58,11 @@ export const getReviewer = async ({ userData }) => {
               type: "section",
               text: {
                 type: "mrkdwn",
-                text: `\n>${pullRequest.body}\n`
+                text: contents
               }
+            },
+            {
+              "type": "divider"
             }
           ]
         }
