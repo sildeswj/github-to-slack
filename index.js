@@ -4,10 +4,10 @@ import { getReviewer } from './modules/github';
 
 const app = async () => {
   try {
-    const githubToken = core.getInput('github-token');
-    const githubRunId = core.getInput('github-run-id');
+    // const githubToken = core.getInput('github-token');
+    // const githubRunId = core.getInput('github-run-id');
     let userData = core.getInput('user-data');
-    const userData2 = core.getInput('user-data2');
+    // const userData2 = core.getInput('user-data2');
     const slackWebhookUrl = core.getInput('slack-webhook-url');
 
 
