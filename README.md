@@ -25,7 +25,7 @@ on:
 jobs:
   github_to_slack:
     runs-on: ubuntu-latest
-    name: W
+    name: Start
     steps:
       - name: Github to slack
         id: sildeswj
