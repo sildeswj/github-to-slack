@@ -2,7 +2,7 @@ import { context } from "@actions/github";
 import { REVIEW_REQUESTED } from "./constants";
 import { send } from "./slack";
 
-export const getReviewer = async ({ userData, slackWebhookUrl }) => {
+export const getReviewer = async ({ userData }) => {
   try {
     // console.log('context: ', context);
     // console.log('payload: ', context.payload);
@@ -24,7 +24,7 @@ export const getReviewer = async ({ userData, slackWebhookUrl }) => {
         const params = {
           slackUserIds,
         }
-        // const result = await send({ slackWebhookUrl, params })
+        // const result = await send({ params })
         // return result
         return true
       }

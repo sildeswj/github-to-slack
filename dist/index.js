@@ -5,10 +5,6 @@ module.exports =
 /***/ 2932:
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-// import core from '@actions/core';
-// import github from '@actions/github';
-// import { getReviewer } from './modules/github';
-
 const core = __webpack_require__(2186);
 const github = __webpack_require__(5438);
 const { getReviewer } = __webpack_require__(4115);
@@ -18,8 +14,7 @@ const app = async () => {
     // const githubToken = core.getInput('github-token');
     // const githubRunId = core.getInput('github-run-id');
     let userData = core.getInput('user-data');
-    // const userData2 = core.getInput('user-data2');
-    const slackWebhookUrl = core.getInput('slack-webhook-url');
+    // const slackWebhookUrl = core.getInput('slack-webhook-url');
 
 
     // console.log(`Input values ${githubToken}, ${slackWebhookUrl}, ${githubRunId}, ${userData}, ${userData2}!`);
@@ -59,16 +54,14 @@ __webpack_require__.d(__webpack_exports__, {
 var github = __webpack_require__(5438);
 // CONCATENATED MODULE: ./modules/constants.js
 const REVIEW_REQUESTED = 'review_requested'
-// EXTERNAL MODULE: ./node_modules/axios/index.js
-var node_modules_axios = __webpack_require__(6545);
 // CONCATENATED MODULE: ./modules/slack.js
-// import core from '@actions/core';
-
+const core = __webpack_require__(2186);
+const axios = __webpack_require__(6545);
 
 // TODO (@jay): add slack send 
-const send = async ({ slackWebhookUrl, params }) => {
+const send = async ({ params }) => {
   try {
-    // const slackWebhookUrl = core.getInput('slack-webhook-url');
+    const slackWebhookUrl = core.getInput('slack-webhook-url');
     console.log('slackWebhookUrl: ', slackWebhookUrl);
     const result = await axios.post(slackWebhookUrl, JSON.stringify(params), {
       headers: { "Content-Type": "application/json" },
@@ -85,7 +78,7 @@ const send = async ({ slackWebhookUrl, params }) => {
 
 
 
-const getReviewer = async ({ userData, slackWebhookUrl }) => {
+const getReviewer = async ({ userData }) => {
   try {
     // console.log('context: ', context);
     // console.log('payload: ', context.payload);
@@ -107,7 +100,7 @@ const getReviewer = async ({ userData, slackWebhookUrl }) => {
         const params = {
           slackUserIds,
         }
-        // const result = await send({ slackWebhookUrl, params })
+        // const result = await send({ params })
         // return result
         return true
       }
@@ -3590,7 +3583,7 @@ exports.request = request;
 /***/ 6545:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-/* unused reexport */ __webpack_require__(2618);
+module.exports = __webpack_require__(2618);
 
 /***/ }),
 

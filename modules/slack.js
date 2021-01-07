@@ -1,10 +1,10 @@
-// import core from '@actions/core';
-import axios from 'axios';
+const core = require('@actions/core');
+const axios = require('axios');
 
 // TODO (@jay): add slack send 
-export const send = async ({ slackWebhookUrl, params }) => {
+export const send = async ({ params }) => {
   try {
-    // const slackWebhookUrl = core.getInput('slack-webhook-url');
+    const slackWebhookUrl = core.getInput('slack-webhook-url');
     console.log('slackWebhookUrl: ', slackWebhookUrl);
     const result = await axios.post(slackWebhookUrl, JSON.stringify(params), {
       headers: { "Content-Type": "application/json" },

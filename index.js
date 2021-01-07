@@ -1,7 +1,3 @@
-// import core from '@actions/core';
-// import github from '@actions/github';
-// import { getReviewer } from './modules/github';
-
 const core = require('@actions/core');
 const github = require('@actions/github');
 const { getReviewer } = require('./modules/github');
@@ -11,8 +7,7 @@ const app = async () => {
     // const githubToken = core.getInput('github-token');
     // const githubRunId = core.getInput('github-run-id');
     let userData = core.getInput('user-data');
-    // const userData2 = core.getInput('user-data2');
-    const slackWebhookUrl = core.getInput('slack-webhook-url');
+    // const slackWebhookUrl = core.getInput('slack-webhook-url');
 
 
     // console.log(`Input values ${githubToken}, ${slackWebhookUrl}, ${githubRunId}, ${userData}, ${userData2}!`);
