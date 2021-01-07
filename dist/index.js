@@ -60,16 +60,13 @@ const getReviewer = async ({ userData }) => {
       const pullRequest = context.payload.pull_request;
       if (pullRequest && pullRequest.requested_reviewers) {
         console.log('payload: ', payload);
-        const reviewers = ["U0172A51T4N", "U01DV0WFDCL"];
-        // const reviewers = pullRequest.requested_reviewers;
-        console.log('reviewers: ', reviewers);
-        console.log('userData: ', userData);
-        console.log('me: ', userData.sildeswj);
-        const slackUserIds = reviewers.map(reviewer => {
-          const reviewerId = reviewer.login
-          const slackId = userData[reviewerId]
-          return `<@${slackId}>`
-        })
+        const reviewers = pullRequest.requested_reviewers;
+        // const slackUserIds = reviewers.map(reviewer => {
+        //   const reviewerId = reviewer.login
+        //   const slackId = userData[reviewerId]
+        //   return `<@${slackId}>`
+        // })
+        const slackUserIds = ["U0172A51T4N", "U01DV0WFDCL"];
         const requestedBy = userData[pullRequest.user.login]
         const text = `
           Requested by: <${requestedBy}>
@@ -80,7 +77,37 @@ const getReviewer = async ({ userData }) => {
         `
         const params = {
           slackUserIds,
-          text: text
+          // text: text
+          blocks: [
+            {
+              type: "sction",
+              text: {
+                type: "mrkdwn",
+                text: `Requested by: <${requestedBy}>`
+              }
+            },
+            {
+              type: "sction",
+              text: {
+                type: "mrkdwn",
+                text: `Reviewers: ${slackUserIds.join('')}`
+              }
+            },
+            {
+              type: "sction",
+              text: {
+                type: "mrkdwn",
+                text: `URL: ${pullRequest.html_url}`
+              }
+            },
+            {
+              type: "sction",
+              text: {
+                type: "mrkdwn",
+                text: `\n>${pullRequest.body}\n`
+              }
+            }
+          ]
         }
         const result = await send({ params })
         return result
