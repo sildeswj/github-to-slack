@@ -13,7 +13,7 @@ export const getReviewer = async ({ userData }) => {
       const pullRequest = context.payload.pull_request;
       if (pullRequest && pullRequest.requested_reviewers) {
         console.log('payload: ', payload);
-        const reviewers = ["U0172A51T4N", "U0172A51T4N"];
+        const reviewers = ["U0172A51T4N", "U01DV0WFDCL"];
         // const reviewers = pullRequest.requested_reviewers;
         console.log('reviewers: ', reviewers);
         console.log('userData: ', userData);
@@ -24,8 +24,9 @@ export const getReviewer = async ({ userData }) => {
           return `<@${slackId}>`
         })
         const text = `
-          Reviewers: ${slackUserIds.join('')},
-          This is a test
+          Reviewers: ${slackUserIds.join('')}
+          Contents:
+          ${payload.pull_request.body}
         `
         const params = {
           slackUserIds,
