@@ -31,9 +31,13 @@ app()
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "REVIEW_REQUESTED": () => /* binding */ REVIEW_REQUESTED
+/* harmony export */   "REVIEW_REQUESTED": () => /* binding */ REVIEW_REQUESTED,
+/* harmony export */   "COMMENT_CRETED": () => /* binding */ COMMENT_CRETED,
+/* harmony export */   "COMMENT_EDITED": () => /* binding */ COMMENT_EDITED
 /* harmony export */ });
 const REVIEW_REQUESTED = 'review_requested'
+const COMMENT_CRETED = 'created'
+const COMMENT_EDITED = 'edited'
 
 /***/ }),
 
@@ -46,13 +50,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getReviewer": () => /* binding */ getReviewer
 /* harmony export */ });
 const { context } = __webpack_require__(5438);
-const { REVIEW_REQUESTED } = __webpack_require__(920);
+const { REVIEW_REQUESTED, COMMENT_CRETED, COMMENT_EDITED } = __webpack_require__(920);
 const { send } = __webpack_require__(7021);
 
 const getReviewer = async ({ userData }) => {
   try {
     const { payload } = context
-    console.log('payload: ', payload);
     if (payload.action === REVIEW_REQUESTED) {
       const pullRequest = context.payload.pull_request;
       if (pullRequest && pullRequest.requested_reviewers) {
@@ -89,7 +92,39 @@ const getReviewer = async ({ userData }) => {
         }
         const result = await send({ params })
         return result
+      } else return true
+    }
+    else if (payload.action === COMMENT_CRETED || payload.action === COMMENT_EDITED) {
+      const { comment } = context.payload;
+
+      let commentBy = comment.user
+      commentBy = userData[commentBy]
+
+      const contents = "```" + comment.body + "```"
+      const params = {
+        text: "",
+        blocks: [
+          // {
+          //   type: "section",
+          //   text: {
+          //     type: "mrkdwn",
+          //     text: `Requested by: <@${requestedBy}>\nReviewers: <@${commentBy}>\nURL: ${pullRequest.html_url}`
+          //   }
+          // },
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: contents
+            }
+          },
+          {
+            "type": "divider"
+          }
+        ]
       }
+      const result = await send({ params })
+      return result
     }
     else return true;
   } catch (err) {
