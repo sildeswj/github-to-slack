@@ -1,17 +1,16 @@
-const core = require('@actions/core');
-const github = require('@actions/github');
-const { getReviewer } = require('./modules/github');
+import core from '@actions/core';
+import github from '@actions/github';
+import { getReviewer } from './modules/github';
 
 const app = async () => {
   try {
     const githubToken = core.getInput('github-token');
-    const slackWebhookUrl = core.getInput('slack-webhook-url');
     const githubRunId = core.getInput('github-run-id');
     let userData = core.getInput('user-data');
     const userData2 = core.getInput('user-data2');
 
-    console.log(`Input values ${githubToken}, ${slackWebhookUrl}, ${githubRunId}, ${userData}, ${userData2}!`);
-    const result = `${githubToken}, ${slackWebhookUrl}, ${githubRunId}`
+    // console.log(`Input values ${githubToken}, ${slackWebhookUrl}, ${githubRunId}, ${userData}, ${userData2}!`);
+    // const result = `${githubToken}, ${slackWebhookUrl}, ${githubRunId}`
 
     userData = JSON.parse(userData)
     console.log('type@@ ', typeof userData)

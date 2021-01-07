@@ -1,5 +1,6 @@
 import { context } from "@actions/github";
 import { REVIEW_REQUESTED } from "./constants";
+import { send } from "./slack";
 
 export const getReviewer = async ({ userData }) => {
   // console.log('context: ', context);
@@ -14,6 +15,15 @@ export const getReviewer = async ({ userData }) => {
       console.log('reviewers: ', reviewers);
       console.log('userData: ', userData);
       console.log('me: ', userData.sildeswj);
+      const slackUserIds = reviewers.map(reviewer => {
+        const reviewerId = reviewer.login
+        const slackId = userData[reviewerId]
+        return slackId
+      })
+      const params = {
+        slackUserIds,
+      }
+      send(params)
       return true
     }
   }
