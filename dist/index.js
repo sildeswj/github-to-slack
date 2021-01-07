@@ -9,7 +9,7 @@ const core = __webpack_require__(2186);
 const github = __webpack_require__(5438);
 const { context } = __webpack_require__(5438);
 const { sendReviewer, sendComment } = __webpack_require__(5738);
-const { REVIEW_REQUESTED, COMMENT_CRETED, COMMENT_EDITED } = __webpack_require__(2965);
+const { REVIEW_REQUESTED, COMMENT_CRETED, COMMENT_EDITED } = __webpack_require__(920);
 
 const app = async () => {
   try {
@@ -62,8 +62,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "sendComment": () => /* binding */ sendComment
 /* harmony export */ });
 // const { context } = require("@actions/github");
-const { REVIEW_REQUESTED, COMMENT_CRETED, COMMENT_EDITED } = __webpack_require__(920);
-const { send } = __webpack_require__(7021);
+const { sendNotification } = __webpack_require__(7021);
 
 const sendReviewer = async ({ userData, payload }) => {
   try {
@@ -100,7 +99,7 @@ const sendReviewer = async ({ userData, payload }) => {
           }
         ]
       }
-      const result = await send({ params })
+      const result = await sendNotification({ params })
       return result
     } else return true
   } catch (err) {
@@ -162,13 +161,12 @@ const sendComment = async ({ userData, payload }) => {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "send": () => /* binding */ send
+/* harmony export */   "sendNotification": () => /* binding */ sendNotification
 /* harmony export */ });
 const core = __webpack_require__(2186);
 const axios = __webpack_require__(6545);
 
-// TODO (@jay): add slack send 
-const send = async ({ params }) => {
+const sendNotification = async ({ params }) => {
   try {
     const slackWebhookUrl = core.getInput('slack-webhook-url');
     console.log('slackWebhookUrl: ', slackWebhookUrl);
@@ -8536,14 +8534,6 @@ function wrappy (fn, cb) {
     return ret
   }
 }
-
-
-/***/ }),
-
-/***/ 2965:
-/***/ ((module) => {
-
-module.exports = eval("require")("./constants");
 
 
 /***/ }),

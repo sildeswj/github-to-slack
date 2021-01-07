@@ -1,8 +1,7 @@
 const core = require('@actions/core');
 const axios = require('axios');
 
-// TODO (@jay): add slack send 
-export const send = async ({ params }) => {
+export const sendNotification = async ({ params }) => {
   try {
     const slackWebhookUrl = core.getInput('slack-webhook-url');
     console.log('slackWebhookUrl: ', slackWebhookUrl);

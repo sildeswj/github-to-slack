@@ -1,6 +1,5 @@
 // const { context } = require("@actions/github");
-const { REVIEW_REQUESTED, COMMENT_CRETED, COMMENT_EDITED } = require("./constants");
-const { send } = require("./slack");
+const { sendNotification } = require("./slack");
 
 export const sendReviewer = async ({ userData, payload }) => {
   try {
@@ -37,7 +36,7 @@ export const sendReviewer = async ({ userData, payload }) => {
           }
         ]
       }
-      const result = await send({ params })
+      const result = await sendNotification({ params })
       return result
     } else return true
   } catch (err) {

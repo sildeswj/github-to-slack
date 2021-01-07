@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const { context } = require("@actions/github");
 const { sendReviewer, sendComment } = require('./modules/github');
-const { REVIEW_REQUESTED, COMMENT_CRETED, COMMENT_EDITED } = require("./constants");
+const { REVIEW_REQUESTED, COMMENT_CRETED, COMMENT_EDITED } = require("./modules/constants");
 
 const app = async () => {
   try {
