@@ -37,6 +37,7 @@ const send = async ({ params }) => {
     });
     return result;
   } catch (err) {
+    console.log('debug: ', err);
     throw new Error(err)
   }
 }
