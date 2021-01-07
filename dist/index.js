@@ -7,7 +7,7 @@ module.exports =
 
 const core = __webpack_require__(2186);
 const github = __webpack_require__(5438);
-const { getReviewer } = __webpack_require__(4115);
+const { getReviewer } = __webpack_require__(5738);
 
 const app = async () => {
   try {
@@ -36,44 +36,29 @@ app()
 
 /***/ }),
 
-/***/ 4115:
+/***/ 920:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, {
-  "getReviewer": () => /* binding */ getReviewer
-});
-
-// EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
-var github = __webpack_require__(5438);
-// CONCATENATED MODULE: ./modules/constants.js
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "REVIEW_REQUESTED": () => /* binding */ REVIEW_REQUESTED
+/* harmony export */ });
 const REVIEW_REQUESTED = 'review_requested'
-// CONCATENATED MODULE: ./modules/slack.js
-const core = __webpack_require__(2186);
-const axios = __webpack_require__(6545);
 
-// TODO (@jay): add slack send 
-const send = async ({ params }) => {
-  try {
-    const slackWebhookUrl = core.getInput('slack-webhook-url');
-    console.log('slackWebhookUrl: ', slackWebhookUrl);
-    const result = await axios.post(slackWebhookUrl, JSON.stringify(params), {
-      headers: { "Content-Type": "application/json" },
-    });
-    return result;
-  } catch (err) {
-    console.log('debug: ', err);
-    throw new Error(err)
-  }
-}
-// CONCATENATED MODULE: ./modules/github.js
+/***/ }),
 
+/***/ 5738:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "getReviewer": () => /* binding */ getReviewer
+/* harmony export */ });
+const { context } = __webpack_require__(5438);
+const { REVIEW_REQUESTED } = __webpack_require__(920);
+const { send } = __webpack_require__(7021);
 
 const getReviewer = async ({ userData }) => {
   try {
@@ -81,9 +66,9 @@ const getReviewer = async ({ userData }) => {
     // console.log('payload: ', context.payload);
     // console.log('pull_request: ', context.payload.pull_request);
 
-    const { payload } = github.context
+    const { payload } = context
     if (payload.action === REVIEW_REQUESTED) {
-      const pullRequest = github.context.payload.pull_request;
+      const pullRequest = context.payload.pull_request;
       if (pullRequest && pullRequest.requested_reviewers) {
         const reviewers = pullRequest.requested_reviewers;
         console.log('reviewers: ', reviewers);
@@ -103,6 +88,34 @@ const getReviewer = async ({ userData }) => {
     }
     else return true;
   } catch (err) {
+    throw new Error(err)
+  }
+}
+
+/***/ }),
+
+/***/ 7021:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "send": () => /* binding */ send
+/* harmony export */ });
+const core = __webpack_require__(2186);
+const axios = __webpack_require__(6545);
+
+// TODO (@jay): add slack send 
+const send = async ({ params }) => {
+  try {
+    const slackWebhookUrl = core.getInput('slack-webhook-url');
+    console.log('slackWebhookUrl: ', slackWebhookUrl);
+    const result = await axios.post(slackWebhookUrl, JSON.stringify(params), {
+      headers: { "Content-Type": "application/json" },
+    });
+    return result;
+  } catch (err) {
+    console.log('debug: ', err);
     throw new Error(err)
   }
 }

@@ -1,6 +1,6 @@
-import { context } from "@actions/github";
-import { REVIEW_REQUESTED } from "./constants";
-import { send } from "./slack";
+const { context } = require("@actions/github");
+const { REVIEW_REQUESTED } = require("./constants");
+const { send } = require("./slack");
 
 export const getReviewer = async ({ userData }) => {
   try {
