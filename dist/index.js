@@ -20,6 +20,8 @@ const app = async () => {
     let userData = core.getInput('user-data');
     userData = JSON.parse(userData)
 
+    console.log('payload.action: ', payload.action);
+
     if (payload.action === REVIEW_REQUESTED) {
       sendReviewer({ userData, payload });
     }
