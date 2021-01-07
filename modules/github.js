@@ -53,13 +53,13 @@ export const getReviewer = async ({ userData }) => {
                 text: `URL: ${pullRequest.html_url}`
               }
             },
-            {
-              type: "sction",
-              text: {
-                type: "mrkdwn",
-                text: `\n>${pullRequest.body}\n`
-              }
-            }
+            // {
+            //   type: "sction",
+            //   text: {
+            //     type: "mrkdwn",
+            //     text: `\n>${pullRequest.body}\n`
+            //   }
+            // }
           ]
         }
         const result = await send({ params })
