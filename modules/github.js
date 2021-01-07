@@ -1,7 +1,7 @@
 // const { context } = require("@actions/github");
 const { sendNotification } = require("./slack");
 
-export const sendReviewer = async ({ userData, payload }) => {
+export const sendReviewer = async ({ userData, payload, header }) => {
   try {
     const pullRequest = payload.pull_request;
     if (pullRequest && pullRequest.requested_reviewers) {
@@ -18,10 +18,18 @@ export const sendReviewer = async ({ userData, payload }) => {
         text: "",
         blocks: [
           {
+            "type": "header",
+            "text": {
+              "type": "plain_text",
+              "text": header,
+              "emoji": true
+            }
+          },
+          {
             type: "section",
             text: {
               type: "mrkdwn",
-              text: `Pull Request 도착 🎁: <@${requestedBy}>\nReviewers: ${slackUserIds.join('')}\nURL: ${pullRequest.html_url}`
+              text: `주인장: <@${requestedBy}>\n리뷰 하실 분: ${slackUserIds.join('')}\nURL: ${pullRequest.html_url}`
             }
           },
           {

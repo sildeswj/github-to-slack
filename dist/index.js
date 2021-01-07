@@ -23,7 +23,8 @@ const app = async () => {
     console.log('payload.action: ', payload.action);
 
     if (payload.action === REVIEW_REQUESTED || payload.action === SYNCHRONIZE) {
-      sendReviewer({ userData, payload });
+      const header = payload.action === SYNCHRONIZE ? '다시 해주세요 🔫' : '리뷰 해주세요 🎁'
+      sendReviewer({ userData, payload, header });
     }
     else if (payload.action === COMMENT_CRETED || payload.action === COMMENT_EDITED) {
       sendComment({ userData, payload })
@@ -68,7 +69,7 @@ __webpack_require__.r(__webpack_exports__);
 // const { context } = require("@actions/github");
 const { sendNotification } = __webpack_require__(7021);
 
-const sendReviewer = async ({ userData, payload }) => {
+const sendReviewer = async ({ userData, payload, header }) => {
   try {
     const pullRequest = payload.pull_request;
     if (pullRequest && pullRequest.requested_reviewers) {
@@ -85,10 +86,18 @@ const sendReviewer = async ({ userData, payload }) => {
         text: "",
         blocks: [
           {
+            "type": "header",
+            "text": {
+              "type": "plain_text",
+              "text": header,
+              "emoji": true
+            }
+          },
+          {
             type: "section",
             text: {
               type: "mrkdwn",
-              text: `Pull Request 도착 🎁: <@${requestedBy}>\nReviewers: ${slackUserIds.join('')}\nURL: ${pullRequest.html_url}`
+              text: `주인장: <@${requestedBy}>\n리뷰 하실 분: ${slackUserIds.join('')}\nURL: ${pullRequest.html_url}`
             }
           },
           {
