@@ -12,17 +12,15 @@ export const getReviewer = async ({ userData }) => {
     if (payload.action === REVIEW_REQUESTED) {
       const pullRequest = context.payload.pull_request;
       if (pullRequest && pullRequest.requested_reviewers) {
-        console.log('payload: ', payload);
         const reviewers = pullRequest.requested_reviewers;
         const slackUserIds = reviewers.map(reviewer => {
           const reviewerId = reviewer.login
           const slackId = userData[reviewerId]
           return `<@${slackId}>`
         })
-        // const slackUserIds = ["<@U0172A51T4N>", "<@U01DV0WFDCL>"];
         const requestedBy = userData[pullRequest.user.login]
         const text = `
-          Requested by: <${requestedBy}>
+          Requested by: <@${requestedBy}>
           Reviewers: ${slackUserIds.join('')}
           URL: ${pullRequest.html_url}
           Contents:
@@ -37,23 +35,23 @@ export const getReviewer = async ({ userData }) => {
               type: "section",
               text: {
                 type: "mrkdwn",
-                text: `Requested by: <${requestedBy}>`
+                text: `Requested by: <${requestedBy}>\nReviewers: ${slackUserIds.join('')}\nURL: ${pullRequest.html_url}`
               }
             },
-            {
-              type: "section",
-              text: {
-                type: "mrkdwn",
-                text: `Reviewers: ${slackUserIds.join('')}`
-              }
-            },
-            {
-              type: "section",
-              text: {
-                type: "mrkdwn",
-                text: `URL: ${pullRequest.html_url}`
-              }
-            },
+            // {
+            //   type: "section",
+            //   text: {
+            //     type: "mrkdwn",
+            //     text: `Reviewers: ${slackUserIds.join('')}`
+            //   }
+            // },
+            // {
+            //   type: "section",
+            //   text: {
+            //     type: "mrkdwn",
+            //     text: `URL: ${pullRequest.html_url}`
+            //   }
+            // },
             {
               type: "section",
               text: {
