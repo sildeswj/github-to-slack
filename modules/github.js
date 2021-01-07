@@ -19,11 +19,15 @@ export const getReviewer = async ({ userData }) => {
         const slackUserIds = reviewers.map(reviewer => {
           const reviewerId = reviewer.login
           const slackId = userData[reviewerId]
-          return slackId
+          return `<@${slackId}>`
         })
+        const text = `
+          Reviewers: ${slackUserIds.join('')},
+          This is a test
+        `
         const params = {
           slackUserIds,
-          text: 'hihi'
+          text: text
         }
         const result = await send({ params })
         return result
