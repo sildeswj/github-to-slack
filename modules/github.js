@@ -4,11 +4,8 @@ const { send } = require("./slack");
 
 export const getReviewer = async ({ userData }) => {
   try {
-    // console.log('context: ', context);
-    // console.log('payload: ', context.payload);
-    // console.log('pull_request: ', context.payload.pull_request);
-
     const { payload } = context
+    console.log('payload: ', payload);
     if (payload.action === REVIEW_REQUESTED) {
       const pullRequest = context.payload.pull_request;
       if (pullRequest && pullRequest.requested_reviewers) {
