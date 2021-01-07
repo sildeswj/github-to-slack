@@ -70,6 +70,7 @@ const getReviewer = async ({ userData }) => {
         })
         const params = {
           slackUserIds,
+          text: 'hihi'
         }
         const result = await send({ params })
         return result
