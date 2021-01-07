@@ -1,5 +1,5 @@
-name: "Hello World"
-description: "Greet someone and record the time"
+name: "Pull Request to Slack"
+description: "Pull request reviewer will be mentioned on slack channel"
 inputs:
   github-token: # id of input
     description: "github-token"
