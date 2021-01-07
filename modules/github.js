@@ -12,7 +12,9 @@ export const getReviewer = async ({ userData }) => {
     if (payload.action === REVIEW_REQUESTED) {
       const pullRequest = context.payload.pull_request;
       if (pullRequest && pullRequest.requested_reviewers) {
-        const reviewers = pullRequest.requested_reviewers;
+        console.log('payload: ', payload);
+        const reviewers = ["U0172A51T4N", "U0172A51T4N"];
+        // const reviewers = pullRequest.requested_reviewers;
         console.log('reviewers: ', reviewers);
         console.log('userData: ', userData);
         console.log('me: ', userData.sildeswj);
