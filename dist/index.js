@@ -102,7 +102,7 @@ const app = async () => {
 
   } catch (error) {
     console.error('error: ', error);
-    core_default().setFailed(error.message);
+    core_default().setFailed(error);
   }
 }
 
