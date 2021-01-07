@@ -30,7 +30,7 @@ export const getReviewer = async ({ userData }) => {
         `
         const params = {
           slackUserIds,
-          // text: text
+          text: "",
           blocks: [
             {
               type: "sction",
