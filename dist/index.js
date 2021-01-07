@@ -20,9 +20,7 @@ var github_default = /*#__PURE__*/__webpack_require__.n(github);
 // CONCATENATED MODULE: ./modules/constants.js
 const REVIEW_REQUESTED = 'review_requested'
 // EXTERNAL MODULE: ./node_modules/axios/index.js
-var axios = __webpack_require__(6545);
-var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
-
+var node_modules_axios = __webpack_require__(6545);
 // CONCATENATED MODULE: ./modules/slack.js
 // import core from '@actions/core';
 
@@ -32,7 +30,7 @@ const send = async ({ slackWebhookUrl, params }) => {
   try {
     // const slackWebhookUrl = core.getInput('slack-webhook-url');
     console.log('slackWebhookUrl: ', slackWebhookUrl);
-    const result = await axios_default().post(slackWebhookUrl, JSON.stringify(params), {
+    const result = await axios.post(slackWebhookUrl, JSON.stringify(params), {
       headers: { "Content-Type": "application/json" },
     });
     return result;
@@ -69,8 +67,9 @@ const getReviewer = async ({ userData, slackWebhookUrl }) => {
         const params = {
           slackUserIds,
         }
-        const result = await send({ slackWebhookUrl, params })
-        return result
+        // const result = await send({ slackWebhookUrl, params })
+        // return result
+        return true
       }
     }
     else return true;
@@ -3583,7 +3582,7 @@ exports.request = request;
 /***/ 6545:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__(2618);
+/* unused reexport */ __webpack_require__(2618);
 
 /***/ }),
 

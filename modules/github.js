@@ -24,8 +24,9 @@ export const getReviewer = async ({ userData, slackWebhookUrl }) => {
         const params = {
           slackUserIds,
         }
-        const result = await send({ slackWebhookUrl, params })
-        return result
+        // const result = await send({ slackWebhookUrl, params })
+        // return result
+        return true
       }
     }
     else return true;
