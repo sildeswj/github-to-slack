@@ -24,13 +24,13 @@ var axios = __webpack_require__(6545);
 var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
 
 // CONCATENATED MODULE: ./modules/slack.js
-
+// import core from '@actions/core';
 
 
 // TODO (@jay): add slack send 
-const send = async ({ params }) => {
+const send = async ({ slackWebhookUrl, params }) => {
   try {
-    const slackWebhookUrl = core_default().getInput('slack-webhook-url');
+    // const slackWebhookUrl = core.getInput('slack-webhook-url');
     console.log('slackWebhookUrl: ', slackWebhookUrl);
     const result = await axios_default().post(slackWebhookUrl, JSON.stringify(params), {
       headers: { "Content-Type": "application/json" },
@@ -46,7 +46,7 @@ const send = async ({ params }) => {
 
 
 
-const getReviewer = async ({ userData }) => {
+const getReviewer = async ({ userData, slackWebhookUrl }) => {
   try {
     // console.log('context: ', context);
     // console.log('payload: ', context.payload);
@@ -68,7 +68,7 @@ const getReviewer = async ({ userData }) => {
         const params = {
           slackUserIds,
         }
-        const result = await send(params)
+        const result = await send({ slackWebhookUrl, params })
         return result
       }
     }
@@ -89,13 +89,15 @@ const app = async () => {
     const githubRunId = core_default().getInput('github-run-id');
     let userData = core_default().getInput('user-data');
     const userData2 = core_default().getInput('user-data2');
+    const slackWebhookUrl = core_default().getInput('slack-webhook-url');
+
 
     // console.log(`Input values ${githubToken}, ${slackWebhookUrl}, ${githubRunId}, ${userData}, ${userData2}!`);
     // const result = `${githubToken}, ${slackWebhookUrl}, ${githubRunId}`
 
     userData = JSON.parse(userData)
     console.log('type@@ ', typeof userData)
-    getReviewer({ userData });
+    getReviewer({ userData, slackWebhookUrl });
     // Get the JSON webhook payload for the event that triggered the workflow.
     const payload = JSON.stringify((github_default()).context.payload, undefined, 2)
     console.log(`The event payload: ${payload}`);
