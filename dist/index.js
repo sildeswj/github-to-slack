@@ -70,10 +70,13 @@ const getReviewer = async ({ userData }) => {
           const slackId = userData[reviewerId]
           return `<@${slackId}>`
         })
+        const requestedBy = userData[pullRequest.user.login]
         const text = `
+          Requested by: <${requestedBy}>
           Reviewers: ${slackUserIds.join('')}
+          URL: ${pullRequest.html_url}
           Contents:
-          ${payload.pull_request.body}
+          ${pullRequest.body}
         `
         const params = {
           slackUserIds,
