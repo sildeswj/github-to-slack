@@ -13,7 +13,7 @@ const app = async () => {
     let userData = core.getInput('user-data');
     userData = JSON.parse(userData)
 
-    if (action === REVIEW_REQUESTED) {
+    if (payload.action === REVIEW_REQUESTED) {
       sendReviewer({ userData, payload });
     }
     else if (payload.action === COMMENT_CRETED || payload.action === COMMENT_EDITED) {
