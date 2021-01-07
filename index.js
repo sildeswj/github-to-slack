@@ -23,7 +23,8 @@ const app = async () => {
 
   } catch (error) {
     console.error('error: ', error);
-    core.setFailed(error);
+    // core.setFailed(error);
+
   }
 }
 

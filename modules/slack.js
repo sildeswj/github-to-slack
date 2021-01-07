@@ -12,6 +12,7 @@ export const send = async ({ slackWebhookUrl, params }) => {
     return result;
   } catch (err) {
     console.log('debug: ', err);
-    throw new Error(err)
+    throw 'error'
+    // throw new Error(err)
   }
 }

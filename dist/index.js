@@ -38,7 +38,8 @@ const send = async ({ slackWebhookUrl, params }) => {
     return result;
   } catch (err) {
     console.log('debug: ', err);
-    throw new Error(err)
+    throw 'error'
+    // throw new Error(err)
   }
 }
 // CONCATENATED MODULE: ./modules/github.js
@@ -75,7 +76,8 @@ const getReviewer = async ({ userData, slackWebhookUrl }) => {
     else return true;
   } catch (err) {
     console.log('debug: ', err);
-    throw new Error(err)
+    throw 'error'
+    // throw new Error(err)
   }
 }
 // CONCATENATED MODULE: ./index.js
@@ -104,7 +106,8 @@ const app = async () => {
 
   } catch (error) {
     console.error('error: ', error);
-    core_default().setFailed(error);
+    // core.setFailed(error);
+
   }
 }
 

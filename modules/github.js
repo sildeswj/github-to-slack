@@ -31,6 +31,7 @@ export const getReviewer = async ({ userData, slackWebhookUrl }) => {
     else return true;
   } catch (err) {
     console.log('debug: ', err);
-    throw new Error(err)
+    throw 'error'
+    // throw new Error(err)
   }
 }
