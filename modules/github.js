@@ -23,9 +23,9 @@ export const getReviewer = async ({ userData }) => {
       const params = {
         slackUserIds,
       }
-      send(params)
-      return true
+      const result = await send(params)
+      return result
     }
   }
-  return true;
+  else return true;
 }
