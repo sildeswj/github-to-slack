@@ -2,7 +2,7 @@ module.exports =
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 1588:
+/***/ 6827:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -17,8 +17,6 @@ var core_default = /*#__PURE__*/__webpack_require__.n(core);
 var github = __webpack_require__(5438);
 var github_default = /*#__PURE__*/__webpack_require__.n(github);
 
-// CONCATENATED MODULE: ./modules/constants.js
-const REVIEW_REQUESTED = 'review_requested'
 // EXTERNAL MODULE: ./node_modules/axios/index.js
 var node_modules_axios = __webpack_require__(6545);
 // CONCATENATED MODULE: ./modules/slack.js
@@ -51,9 +49,9 @@ const getReviewer = async ({ userData, slackWebhookUrl }) => {
     // console.log('payload: ', context.payload);
     // console.log('pull_request: ', context.payload.pull_request);
 
-    const { payload } = github.context
+    const { payload } = context
     if (payload.action === REVIEW_REQUESTED) {
-      const pullRequest = github.context.payload.pull_request;
+      const pullRequest = context.payload.pull_request;
       if (pullRequest && pullRequest.requested_reviewers) {
         const reviewers = pullRequest.requested_reviewers;
         console.log('reviewers: ', reviewers);
@@ -97,8 +95,8 @@ const app = async () => {
     // const result = `${githubToken}, ${slackWebhookUrl}, ${githubRunId}`
 
     userData = JSON.parse(userData)
-    console.log('type@@ ', typeof userData)
-    getReviewer({ userData, slackWebhookUrl });
+    // getReviewer({ userData, slackWebhookUrl });
+
     // Get the JSON webhook payload for the event that triggered the workflow.
     const payload = JSON.stringify((github_default()).context.payload, undefined, 2)
     console.log(`The event payload: ${payload}`);
@@ -8676,6 +8674,6 @@ module.exports = require("zlib");;
 /******/ 	// module exports must be returned from runtime so entry inlining is disabled
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(1588);
+/******/ 	return __webpack_require__(6827);
 /******/ })()
 ;
