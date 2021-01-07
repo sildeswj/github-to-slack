@@ -66,7 +66,7 @@ const getReviewer = async ({ userData }) => {
         //   const slackId = userData[reviewerId]
         //   return `<@${slackId}>`
         // })
-        const slackUserIds = ["U0172A51T4N", "U01DV0WFDCL"];
+        const slackUserIds = ["<@U0172A51T4N>", "<@U01DV0WFDCL>"];
         const requestedBy = userData[pullRequest.user.login]
         const text = `
           Requested by: <${requestedBy}>
@@ -80,28 +80,28 @@ const getReviewer = async ({ userData }) => {
           text: "",
           blocks: [
             {
-              type: "sction",
+              type: "section",
               text: {
                 type: "mrkdwn",
                 text: `Requested by: <${requestedBy}>`
               }
             },
             {
-              type: "sction",
+              type: "section",
               text: {
                 type: "mrkdwn",
                 text: `Reviewers: ${slackUserIds.join('')}`
               }
             },
             {
-              type: "sction",
+              type: "section",
               text: {
                 type: "mrkdwn",
                 text: `URL: ${pullRequest.html_url}`
               }
             },
             // {
-            //   type: "sction",
+            //   type: "section",
             //   text: {
             //     type: "mrkdwn",
             //     text: `\n>${pullRequest.body}\n`
