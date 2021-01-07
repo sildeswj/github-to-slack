@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const { context } = require("@actions/github");
 const { sendReviewer, sendComment } = require('./modules/github');
-const { REVIEW_REQUESTED, COMMENT_CRETED, COMMENT_EDITED } = require("./modules/constants");
+const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED } = require("./modules/constants");
 
 const app = async () => {
   try {
@@ -15,7 +15,7 @@ const app = async () => {
 
     console.log('payload.action: ', payload.action);
 
-    if (payload.action === REVIEW_REQUESTED) {
+    if (payload.action === REVIEW_REQUESTED || payload.action === SYNCHRONIZE) {
       sendReviewer({ userData, payload });
     }
     else if (payload.action === COMMENT_CRETED || payload.action === COMMENT_EDITED) {

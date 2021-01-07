@@ -9,7 +9,7 @@ const core = __webpack_require__(2186);
 const github = __webpack_require__(5438);
 const { context } = __webpack_require__(5438);
 const { sendReviewer, sendComment } = __webpack_require__(5738);
-const { REVIEW_REQUESTED, COMMENT_CRETED, COMMENT_EDITED } = __webpack_require__(920);
+const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED } = __webpack_require__(920);
 
 const app = async () => {
   try {
@@ -22,7 +22,7 @@ const app = async () => {
 
     console.log('payload.action: ', payload.action);
 
-    if (payload.action === REVIEW_REQUESTED) {
+    if (payload.action === REVIEW_REQUESTED || payload.action === SYNCHRONIZE) {
       sendReviewer({ userData, payload });
     }
     else if (payload.action === COMMENT_CRETED || payload.action === COMMENT_EDITED) {
@@ -45,10 +45,12 @@ app()
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "REVIEW_REQUESTED": () => /* binding */ REVIEW_REQUESTED,
+/* harmony export */   "SYNCHRONIZE": () => /* binding */ SYNCHRONIZE,
 /* harmony export */   "COMMENT_CRETED": () => /* binding */ COMMENT_CRETED,
 /* harmony export */   "COMMENT_EDITED": () => /* binding */ COMMENT_EDITED
 /* harmony export */ });
 const REVIEW_REQUESTED = 'review_requested'
+const SYNCHRONIZE = 'synchronize'
 const COMMENT_CRETED = 'created'
 const COMMENT_EDITED = 'edited'
 
