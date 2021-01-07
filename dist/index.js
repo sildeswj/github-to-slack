@@ -146,7 +146,7 @@ const sendComment = async ({ userData, payload }) => {
         }
       ]
     }
-    const result = await send({ params })
+    const result = await sendNotification({ params })
     return result
   } catch (err) {
     throw new Error(err)
