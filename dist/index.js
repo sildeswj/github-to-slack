@@ -47,31 +47,36 @@ const send = async ({ params }) => {
 
 
 const getReviewer = async ({ userData }) => {
-  // console.log('context: ', context);
-  // console.log('payload: ', context.payload);
-  // console.log('pull_request: ', context.payload.pull_request);
+  try {
+    // console.log('context: ', context);
+    // console.log('payload: ', context.payload);
+    // console.log('pull_request: ', context.payload.pull_request);
 
-  const { payload } = github.context
-  if (payload.action === REVIEW_REQUESTED) {
-    const pullRequest = github.context.payload.pull_request;
-    if (pullRequest && pullRequest.requested_reviewers) {
-      const reviewers = pullRequest.requested_reviewers;
-      console.log('reviewers: ', reviewers);
-      console.log('userData: ', userData);
-      console.log('me: ', userData.sildeswj);
-      const slackUserIds = reviewers.map(reviewer => {
-        const reviewerId = reviewer.login
-        const slackId = userData[reviewerId]
-        return slackId
-      })
-      const params = {
-        slackUserIds,
+    const { payload } = github.context
+    if (payload.action === REVIEW_REQUESTED) {
+      const pullRequest = github.context.payload.pull_request;
+      if (pullRequest && pullRequest.requested_reviewers) {
+        const reviewers = pullRequest.requested_reviewers;
+        console.log('reviewers: ', reviewers);
+        console.log('userData: ', userData);
+        console.log('me: ', userData.sildeswj);
+        const slackUserIds = reviewers.map(reviewer => {
+          const reviewerId = reviewer.login
+          const slackId = userData[reviewerId]
+          return slackId
+        })
+        const params = {
+          slackUserIds,
+        }
+        const result = await send(params)
+        return result
       }
-      const result = await send(params)
-      return result
     }
+    else return true;
+  } catch (err) {
+    console.log('debug: ', err);
+    throw new Error(err)
   }
-  else return true;
 }
 // CONCATENATED MODULE: ./index.js
 
