@@ -13,7 +13,7 @@ const { REVIEW_REQUESTED, COMMENT_CRETED, COMMENT_EDITED } = __webpack_require__
 
 const app = async () => {
   try {
-    const { action } = context.payload;
+    const { payload } = context;
     // const githubToken = core.getInput('github-token');
     // const githubRunId = core.getInput('github-run-id');
 
