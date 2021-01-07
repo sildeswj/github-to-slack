@@ -66,13 +66,6 @@ const getReviewer = async ({ userData }) => {
           return `<@${slackId}>`
         })
         const requestedBy = userData[pullRequest.user.login]
-        const text = `
-          Requested by: <@${requestedBy}>
-          Reviewers: ${slackUserIds.join('')}
-          URL: ${pullRequest.html_url}
-          Contents:
-          ${pullRequest.body}
-        `
         const contents = "```" + pullRequest.body + "```"
         const params = {
           slackUserIds,
@@ -82,23 +75,9 @@ const getReviewer = async ({ userData }) => {
               type: "section",
               text: {
                 type: "mrkdwn",
-                text: `Requested by: <${requestedBy}>\nReviewers: ${slackUserIds.join('')}\nURL: ${pullRequest.html_url}`
+                text: `Requested by: <@${requestedBy}>\nReviewers: ${slackUserIds.join('')}\nURL: ${pullRequest.html_url}`
               }
             },
-            // {
-            //   type: "section",
-            //   text: {
-            //     type: "mrkdwn",
-            //     text: `Reviewers: ${slackUserIds.join('')}`
-            //   }
-            // },
-            // {
-            //   type: "section",
-            //   text: {
-            //     type: "mrkdwn",
-            //     text: `URL: ${pullRequest.html_url}`
-            //   }
-            // },
             {
               type: "section",
               text: {
