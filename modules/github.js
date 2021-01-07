@@ -14,12 +14,12 @@ export const getReviewer = async ({ userData }) => {
       if (pullRequest && pullRequest.requested_reviewers) {
         console.log('payload: ', payload);
         const reviewers = pullRequest.requested_reviewers;
-        // const slackUserIds = reviewers.map(reviewer => {
-        //   const reviewerId = reviewer.login
-        //   const slackId = userData[reviewerId]
-        //   return `<@${slackId}>`
-        // })
-        const slackUserIds = ["<@U0172A51T4N>", "<@U01DV0WFDCL>"];
+        const slackUserIds = reviewers.map(reviewer => {
+          const reviewerId = reviewer.login
+          const slackId = userData[reviewerId]
+          return `<@${slackId}>`
+        })
+        // const slackUserIds = ["<@U0172A51T4N>", "<@U01DV0WFDCL>"];
         const requestedBy = userData[pullRequest.user.login]
         const text = `
           Requested by: <${requestedBy}>
@@ -53,13 +53,13 @@ export const getReviewer = async ({ userData }) => {
                 text: `URL: ${pullRequest.html_url}`
               }
             },
-            // {
-            //   type: "section",
-            //   text: {
-            //     type: "mrkdwn",
-            //     text: `\n>${pullRequest.body}\n`
-            //   }
-            // }
+            {
+              type: "section",
+              text: {
+                type: "mrkdwn",
+                text: `\n>${pullRequest.body}\n`
+              }
+            }
           ]
         }
         const result = await send({ params })
