@@ -22,7 +22,7 @@ export const sendReviewer = async ({ userData, payload }) => {
             type: "section",
             text: {
               type: "mrkdwn",
-              text: `Requested by: <@${requestedBy}>\nReviewers: ${slackUserIds.join('')}\nURL: ${pullRequest.html_url}`
+              text: `Pull Request 도착 🎁: <@${requestedBy}>\nReviewers: ${slackUserIds.join('')}\nURL: ${pullRequest.html_url}`
             }
           },
           {
