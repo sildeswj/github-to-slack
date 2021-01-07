@@ -7,15 +7,26 @@ module.exports =
 
 const core = __webpack_require__(2186);
 const github = __webpack_require__(5438);
-const { getReviewer } = __webpack_require__(5738);
+const { context } = __webpack_require__(5438);
+const { sendReviewer, sendComment } = __webpack_require__(5738);
+const { REVIEW_REQUESTED, COMMENT_CRETED, COMMENT_EDITED } = __webpack_require__(2965);
 
 const app = async () => {
   try {
+    const { action } = context.payload;
     // const githubToken = core.getInput('github-token');
     // const githubRunId = core.getInput('github-run-id');
+
     let userData = core.getInput('user-data');
     userData = JSON.parse(userData)
-    getReviewer({ userData });
+
+    if (action === REVIEW_REQUESTED) {
+      sendReviewer({ userData, payload });
+    }
+    else if (payload.action === COMMENT_CRETED || payload.action === COMMENT_EDITED) {
+      sendComment({ userData, payload })
+    }
+
   } catch (error) {
     core.setFailed(error);
   }
@@ -47,70 +58,36 @@ const COMMENT_EDITED = 'edited'
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "getReviewer": () => /* binding */ getReviewer
+/* harmony export */   "sendReviewer": () => /* binding */ sendReviewer,
+/* harmony export */   "sendComment": () => /* binding */ sendComment
 /* harmony export */ });
-const { context } = __webpack_require__(5438);
+// const { context } = require("@actions/github");
 const { REVIEW_REQUESTED, COMMENT_CRETED, COMMENT_EDITED } = __webpack_require__(920);
 const { send } = __webpack_require__(7021);
 
-const getReviewer = async ({ userData }) => {
+const sendReviewer = async ({ userData, payload }) => {
   try {
-    const { payload } = context
-    if (payload.action === REVIEW_REQUESTED) {
-      const pullRequest = context.payload.pull_request;
-      if (pullRequest && pullRequest.requested_reviewers) {
-        const reviewers = pullRequest.requested_reviewers;
-        const slackUserIds = reviewers.map(reviewer => {
-          const reviewerId = reviewer.login
-          const slackId = userData[reviewerId]
-          return `<@${slackId}>`
-        })
-        const requestedBy = userData[pullRequest.user.login]
-        const contents = "```" + pullRequest.body + "```"
-        const params = {
-          slackUserIds,
-          text: "",
-          blocks: [
-            {
-              type: "section",
-              text: {
-                type: "mrkdwn",
-                text: `Requested by: <@${requestedBy}>\nReviewers: ${slackUserIds.join('')}\nURL: ${pullRequest.html_url}`
-              }
-            },
-            {
-              type: "section",
-              text: {
-                type: "mrkdwn",
-                text: contents
-              }
-            },
-            {
-              "type": "divider"
-            }
-          ]
-        }
-        const result = await send({ params })
-        return result
-      } else return true
-    }
-    else if (payload.action === COMMENT_CRETED || payload.action === COMMENT_EDITED) {
-      const { comment } = context.payload;
-
-      let commentBy = comment.user
-      commentBy = userData[commentBy]
-
-      const contents = "```" + comment.body + "```"
+    const pullRequest = payload.pull_request;
+    if (pullRequest && pullRequest.requested_reviewers) {
+      const reviewers = pullRequest.requested_reviewers;
+      const slackUserIds = reviewers.map(reviewer => {
+        const reviewerId = reviewer.login
+        const slackId = userData[reviewerId]
+        return `<@${slackId}>`
+      })
+      const requestedBy = userData[pullRequest.user.login]
+      const contents = "```" + pullRequest.body + "```"
       const params = {
+        slackUserIds,
         text: "",
         blocks: [
-          // {
-          //   type: "section",
-          //   text: {
-          //     type: "mrkdwn",
-          //     text: `Requested by: <@${requestedBy}>\nReviewers: <@${commentBy}>\nURL: ${pullRequest.html_url}`
-          //   }
-          // },
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: `Requested by: <@${requestedBy}>\nReviewers: ${slackUserIds.join('')}\nURL: ${pullRequest.html_url}`
+            }
+          },
           {
             type: "section",
             text: {
@@ -125,8 +102,53 @@ const getReviewer = async ({ userData }) => {
       }
       const result = await send({ params })
       return result
+    } else return true
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
+const sendComment = async ({ userData, payload }) => {
+  try {
+    const { comment } = payload;
+    const pullRequest = payload.pull_request
+    const requestedBy = userData[pullRequest.user.login]
+    let commentBy = comment.user
+    commentBy = userData[commentBy]
+
+    const contents = "```" + comment.body + "```"
+    const params = {
+      text: "",
+      blocks: [
+        {
+          "type": "header",
+          "text": {
+            "type": "plain_text",
+            "text": "코멘트 도착 💪",
+            "emoji": true
+          }
+        },
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: `주인장: <@${requestedBy}>\nURL: ${comment.html_url}`
+          }
+        },
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: contents
+          }
+        },
+        {
+          "type": "divider"
+        }
+      ]
     }
-    else return true;
+    const result = await send({ params })
+    return result
   } catch (err) {
     throw new Error(err)
   }
@@ -8514,6 +8536,14 @@ function wrappy (fn, cb) {
     return ret
   }
 }
+
+
+/***/ }),
+
+/***/ 2965:
+/***/ ((module) => {
+
+module.exports = eval("require")("./constants");
 
 
 /***/ }),
