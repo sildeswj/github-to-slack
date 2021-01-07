@@ -28,9 +28,7 @@ const app = async () => {
     console.log(`The event payload: ${payload}`);
 
   } catch (error) {
-    console.error('error: ', error);
-    // core.setFailed(error);
-
+    core.setFailed(error);
   }
 }
 
@@ -69,8 +67,7 @@ const send = async ({ params }) => {
     return result;
   } catch (err) {
     console.log('debug: ', err);
-    throw 'error'
-    // throw new Error(err)
+    throw new Error(err)
   }
 }
 // CONCATENATED MODULE: ./modules/github.js
@@ -100,16 +97,13 @@ const getReviewer = async ({ userData }) => {
         const params = {
           slackUserIds,
         }
-        // const result = await send({ params })
-        // return result
-        return true
+        const result = await send({ params })
+        return result
       }
     }
     else return true;
   } catch (err) {
-    console.log('debug: ', err);
-    throw 'error'
-    // throw new Error(err)
+    throw new Error(err)
   }
 }
 

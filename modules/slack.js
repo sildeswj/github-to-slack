@@ -12,7 +12,6 @@ export const send = async ({ params }) => {
     return result;
   } catch (err) {
     console.log('debug: ', err);
-    throw 'error'
-    // throw new Error(err)
+    throw new Error(err)
   }
 }

@@ -21,9 +21,7 @@ const app = async () => {
     console.log(`The event payload: ${payload}`);
 
   } catch (error) {
-    console.error('error: ', error);
-    // core.setFailed(error);
-
+    core.setFailed(error);
   }
 }
 
