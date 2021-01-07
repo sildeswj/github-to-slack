@@ -31,7 +31,7 @@ var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
 const send = async ({ params }) => {
   try {
     const slackWebhookUrl = core_default().getInput('slack-webhook-url');
-
+    console.log('slackWebhookUrl: ', slackWebhookUrl);
     const result = await axios_default().post(slackWebhookUrl, JSON.stringify(params), {
       headers: { "Content-Type": "application/json" },
     });

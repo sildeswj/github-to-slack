@@ -5,7 +5,7 @@ import axios from 'axios';
 export const send = async ({ params }) => {
   try {
     const slackWebhookUrl = core.getInput('slack-webhook-url');
-
+    console.log('slackWebhookUrl: ', slackWebhookUrl);
     const result = await axios.post(slackWebhookUrl, JSON.stringify(params), {
       headers: { "Content-Type": "application/json" },
     });
