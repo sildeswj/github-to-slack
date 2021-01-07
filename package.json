@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "ncc build index.js --license licenses.txt",
-    "push": "yarn build && git add . && git commit -m 'aa' && git tag -d latest || true && git push origin :latest || true && git tag -a -m 'aa' latest && git push --follow-tags"
+    "push": "yarn build && git add . && git commit -m 'aa' && (git push origin :latest || true) && (git tag -d latest || true) && git tag -a -m 'aa' latest && git push --follow-tags"
   },
   "keywords": [],
   "author": "",
