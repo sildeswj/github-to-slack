@@ -2,21 +2,63 @@ module.exports =
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 6827:
+/***/ 2932:
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+// import core from '@actions/core';
+// import github from '@actions/github';
+// import { getReviewer } from './modules/github';
+
+const core = __webpack_require__(2186);
+const github = __webpack_require__(5438);
+const { getReviewer } = __webpack_require__(4115);
+
+const app = async () => {
+  try {
+    // const githubToken = core.getInput('github-token');
+    // const githubRunId = core.getInput('github-run-id');
+    let userData = core.getInput('user-data');
+    // const userData2 = core.getInput('user-data2');
+    const slackWebhookUrl = core.getInput('slack-webhook-url');
+
+
+    // console.log(`Input values ${githubToken}, ${slackWebhookUrl}, ${githubRunId}, ${userData}, ${userData2}!`);
+    // const result = `${githubToken}, ${slackWebhookUrl}, ${githubRunId}`
+
+    userData = JSON.parse(userData)
+    // getReviewer({ userData, slackWebhookUrl });
+
+    // Get the JSON webhook payload for the event that triggered the workflow.
+    const payload = JSON.stringify(github.context.payload, undefined, 2)
+    console.log(`The event payload: ${payload}`);
+
+  } catch (error) {
+    console.error('error: ', error);
+    // core.setFailed(error);
+
+  }
+}
+
+app()
+
+/***/ }),
+
+/***/ 4115:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
-// EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
-var core = __webpack_require__(2186);
-var core_default = /*#__PURE__*/__webpack_require__.n(core);
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, {
+  "getReviewer": () => /* binding */ getReviewer
+});
 
 // EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
 var github = __webpack_require__(5438);
-var github_default = /*#__PURE__*/__webpack_require__.n(github);
-
+// CONCATENATED MODULE: ./modules/constants.js
+const REVIEW_REQUESTED = 'review_requested'
 // EXTERNAL MODULE: ./node_modules/axios/index.js
 var node_modules_axios = __webpack_require__(6545);
 // CONCATENATED MODULE: ./modules/slack.js
@@ -49,9 +91,9 @@ const getReviewer = async ({ userData, slackWebhookUrl }) => {
     // console.log('payload: ', context.payload);
     // console.log('pull_request: ', context.payload.pull_request);
 
-    const { payload } = context
+    const { payload } = github.context
     if (payload.action === REVIEW_REQUESTED) {
-      const pullRequest = context.payload.pull_request;
+      const pullRequest = github.context.payload.pull_request;
       if (pullRequest && pullRequest.requested_reviewers) {
         const reviewers = pullRequest.requested_reviewers;
         console.log('reviewers: ', reviewers);
@@ -77,38 +119,6 @@ const getReviewer = async ({ userData, slackWebhookUrl }) => {
     // throw new Error(err)
   }
 }
-// CONCATENATED MODULE: ./index.js
-
-
-
-
-const app = async () => {
-  try {
-    // const githubToken = core.getInput('github-token');
-    // const githubRunId = core.getInput('github-run-id');
-    let userData = core_default().getInput('user-data');
-    // const userData2 = core.getInput('user-data2');
-    const slackWebhookUrl = core_default().getInput('slack-webhook-url');
-
-
-    // console.log(`Input values ${githubToken}, ${slackWebhookUrl}, ${githubRunId}, ${userData}, ${userData2}!`);
-    // const result = `${githubToken}, ${slackWebhookUrl}, ${githubRunId}`
-
-    userData = JSON.parse(userData)
-    // getReviewer({ userData, slackWebhookUrl });
-
-    // Get the JSON webhook payload for the event that triggered the workflow.
-    const payload = JSON.stringify((github_default()).context.payload, undefined, 2)
-    console.log(`The event payload: ${payload}`);
-
-  } catch (error) {
-    console.error('error: ', error);
-    // core.setFailed(error);
-
-  }
-}
-
-app()
 
 /***/ }),
 
@@ -8628,18 +8638,6 @@ module.exports = require("zlib");;
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => module['default'] :
-/******/ 				() => module;
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -8674,6 +8672,6 @@ module.exports = require("zlib");;
 /******/ 	// module exports must be returned from runtime so entry inlining is disabled
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(6827);
+/******/ 	return __webpack_require__(2932);
 /******/ })()
 ;

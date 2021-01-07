@@ -1,6 +1,10 @@
-import core from '@actions/core';
-import github from '@actions/github';
-import { getReviewer } from './modules/github';
+// import core from '@actions/core';
+// import github from '@actions/github';
+// import { getReviewer } from './modules/github';
+
+const core = require('@actions/core');
+const github = require('@actions/github');
+const { getReviewer } = require('./modules/github');
 
 const app = async () => {
   try {
