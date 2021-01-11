@@ -1,9 +1,7 @@
-// const { context } = require("@actions/github");
 const { sendNotification } = require("./slack");
 
 export const sendReviewer = async ({ userData, payload, header }) => {
   try {
-    // console.log('payload: ', payload);
     const pullRequest = payload.pull_request_target ? payload.pull_request_target : payload.pull_request;
     if (pullRequest && pullRequest.requested_reviewers) {
       const reviewers = pullRequest.requested_reviewers;
@@ -12,8 +10,6 @@ export const sendReviewer = async ({ userData, payload, header }) => {
         const slackId = userData[reviewerId]
         return `<@${slackId}>`
       })
-      console.log('reviewers: ', reviewers, slackUserIds);
-      console.log('userData: ', userData);
       const requestedBy = userData[pullRequest.user.login]
       const contents = "```" + pullRequest.body + "```"
       const params = {

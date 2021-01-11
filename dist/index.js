@@ -66,12 +66,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "sendReviewer": () => /* binding */ sendReviewer,
 /* harmony export */   "sendComment": () => /* binding */ sendComment
 /* harmony export */ });
-// const { context } = require("@actions/github");
 const { sendNotification } = __webpack_require__(7021);
 
 const sendReviewer = async ({ userData, payload, header }) => {
   try {
-    // console.log('payload: ', payload);
     const pullRequest = payload.pull_request_target ? payload.pull_request_target : payload.pull_request;
     if (pullRequest && pullRequest.requested_reviewers) {
       const reviewers = pullRequest.requested_reviewers;
@@ -80,8 +78,6 @@ const sendReviewer = async ({ userData, payload, header }) => {
         const slackId = userData[reviewerId]
         return `<@${slackId}>`
       })
-      console.log('reviewers: ', reviewers, slackUserIds);
-      console.log('userData: ', userData);
       const requestedBy = userData[pullRequest.user.login]
       const contents = "```" + pullRequest.body + "```"
       const params = {
@@ -185,7 +181,6 @@ const axios = __webpack_require__(6545);
 const sendNotification = async ({ params }) => {
   try {
     const slackWebhookUrl = core.getInput('slack-webhook-url');
-    console.log('slackWebhookUrl: ', slackWebhookUrl);
     const result = await axios.post(slackWebhookUrl, JSON.stringify(params), {
       headers: { "Content-Type": "application/json" },
     });
