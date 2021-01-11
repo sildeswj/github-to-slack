@@ -81,6 +81,7 @@ const sendReviewer = async ({ userData, payload, header }) => {
         return `<@${slackId}>`
       })
       console.log('reviewers: ', reviewers, slackUserIds);
+      console.log('userData: ', userData);
       const requestedBy = userData[pullRequest.user.login]
       const contents = "```" + pullRequest.body + "```"
       const params = {
