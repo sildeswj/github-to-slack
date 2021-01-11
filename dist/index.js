@@ -71,7 +71,7 @@ const { sendNotification } = __webpack_require__(7021);
 
 const sendReviewer = async ({ userData, payload, header }) => {
   try {
-    const pullRequest = payload.pull_request;
+    const pullRequest = payload.pull_request_target ? payload.pull_request_target : payload.pull_request;
     if (pullRequest && pullRequest.requested_reviewers) {
       const reviewers = pullRequest.requested_reviewers;
       const slackUserIds = reviewers.map(reviewer => {
@@ -123,7 +123,7 @@ const sendReviewer = async ({ userData, payload, header }) => {
 const sendComment = async ({ userData, payload }) => {
   try {
     const { comment } = payload;
-    const pullRequest = payload.pull_request
+    const pullRequest = payload.pull_request_target ? payload.pull_request_target : payload.pull_request;
     const requestedBy = userData[pullRequest.user.login]
     let commentBy = comment.user
     commentBy = userData[commentBy]

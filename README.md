@@ -19,6 +19,8 @@ on:
     types: [review_requested, synchronize]
   # pull_request_review:
   #   types: [submitted]
+  pull_request_target:
+    types: [review_requested, synchronize]
   pull_request_review_comment:
     types: [created, edited]
 
