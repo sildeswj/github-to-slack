@@ -13,14 +13,15 @@ const app = async () => {
     let userData = core.getInput('user-data');
     userData = JSON.parse(userData)
 
-    console.log('payload.action: ', payload.action);
-
     if (payload.action === REVIEW_REQUESTED || payload.action === SYNCHRONIZE) {
       const header = payload.action === SYNCHRONIZE ? '다시 해주세요 🔫' : '리뷰 해주세요 🎁'
       sendReviewer({ userData, payload, header });
     }
     else if (payload.action === COMMENT_CRETED || payload.action === COMMENT_EDITED) {
       sendComment({ userData, payload })
+    }
+    else {
+      console.log('payload: ', payload);
     }
 
   } catch (error) {
