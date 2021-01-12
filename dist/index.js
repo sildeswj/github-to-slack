@@ -219,7 +219,8 @@ const sendClosed = async ({ userData, payload }) => {
           }
         ]
       }
-      const result = await sendNotification({ params })
+      const toWhere = 'staging'
+      const result = await sendNotification({ params, toWhere })
       return result
     }
     // pull request merged to master
