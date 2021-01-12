@@ -8,8 +8,8 @@ module.exports =
 const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
 const { context } = __nccwpck_require__(5438);
-const { sendReviewer, sendComment } = __nccwpck_require__(5738);
-const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED } = __nccwpck_require__(920);
+const { sendReviewer, sendComment, sendClosed } = __nccwpck_require__(5738);
+const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = __nccwpck_require__(920);
 
 const app = async () => {
   try {
@@ -26,6 +26,9 @@ const app = async () => {
     }
     else if (payload.action === COMMENT_CRETED || payload.action === COMMENT_EDITED) {
       sendComment({ userData, payload })
+    }
+    else if (payload.action === PULL_REQUEST_CLOSED) {
+
     }
     else {
       console.log('payload: ', payload);
@@ -49,12 +52,14 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony export */   "REVIEW_REQUESTED": () => /* binding */ REVIEW_REQUESTED,
 /* harmony export */   "SYNCHRONIZE": () => /* binding */ SYNCHRONIZE,
 /* harmony export */   "COMMENT_CRETED": () => /* binding */ COMMENT_CRETED,
-/* harmony export */   "COMMENT_EDITED": () => /* binding */ COMMENT_EDITED
+/* harmony export */   "COMMENT_EDITED": () => /* binding */ COMMENT_EDITED,
+/* harmony export */   "PULL_REQUEST_CLOSED": () => /* binding */ PULL_REQUEST_CLOSED
 /* harmony export */ });
 const REVIEW_REQUESTED = 'review_requested'
 const SYNCHRONIZE = 'synchronize'
 const COMMENT_CRETED = 'created'
 const COMMENT_EDITED = 'edited'
+const PULL_REQUEST_CLOSED = 'closed'
 
 /***/ }),
 
@@ -65,13 +70,14 @@ const COMMENT_EDITED = 'edited'
 __nccwpck_require__.r(__webpack_exports__);
 /* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
 /* harmony export */   "sendReviewer": () => /* binding */ sendReviewer,
-/* harmony export */   "sendComment": () => /* binding */ sendComment
+/* harmony export */   "sendComment": () => /* binding */ sendComment,
+/* harmony export */   "sendClosed": () => /* binding */ sendClosed
 /* harmony export */ });
 const { sendNotification } = __nccwpck_require__(7021);
 
 const sendReviewer = async ({ userData, payload, header }) => {
   try {
-    const pullRequest = payload.pull_request_target ? payload.pull_request_target : payload.pull_request;
+    const pullRequest = payload.pull_request;
     if (pullRequest && pullRequest.requested_reviewers) {
       const reviewers = pullRequest.requested_reviewers;
       const slackUserIds = reviewers.map(reviewer => {
@@ -123,7 +129,7 @@ const sendReviewer = async ({ userData, payload, header }) => {
 const sendComment = async ({ userData, payload }) => {
   try {
     const { comment } = payload;
-    const pullRequest = payload.pull_request_target ? payload.pull_request_target : payload.pull_request;
+    const pullRequest = payload.pull_request;
     const requestedBy = userData[pullRequest.user.login]
     let commentBy = comment.user
     commentBy = userData[commentBy]
@@ -161,6 +167,58 @@ const sendComment = async ({ userData, payload }) => {
     }
     const result = await sendNotification({ params })
     return result
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
+const sendClosed = async ({ userData, payload }) => {
+  try {
+    const pullRequest = payload.pull_request;
+    const requestedBy = userData[pullRequest.user.login]
+
+    // pull request merged to develop
+    if (pullRequest.base.ref === 'develop') {
+      const params = {
+        text: "",
+        blocks: [
+          {
+            "type": "header",
+            "text": {
+              "type": "plain_text",
+              "text": "스테이징에 새로운 기능이 올라갔어요 🥳",
+              "emoji": true
+            }
+          },
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: `주인장: <@${requestedBy}>`
+            }
+          },
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: pullRequest.body
+            }
+          },
+          {
+            "type": "divider"
+          }
+        ]
+      }
+      const result = await sendNotification({ params })
+      return result
+    }
+    // pull request merged to master
+    else if (pullRequest.base.ref === 'master') {
+      return true
+    }
+
+    return true
+
   } catch (err) {
     throw new Error(err)
   }

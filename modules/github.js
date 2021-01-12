@@ -2,7 +2,7 @@ const { sendNotification } = require("./slack");
 
 export const sendReviewer = async ({ userData, payload, header }) => {
   try {
-    const pullRequest = payload.pull_request_target ? payload.pull_request_target : payload.pull_request;
+    const pullRequest = payload.pull_request;
     if (pullRequest && pullRequest.requested_reviewers) {
       const reviewers = pullRequest.requested_reviewers;
       const slackUserIds = reviewers.map(reviewer => {
@@ -54,7 +54,7 @@ export const sendReviewer = async ({ userData, payload, header }) => {
 export const sendComment = async ({ userData, payload }) => {
   try {
     const { comment } = payload;
-    const pullRequest = payload.pull_request_target ? payload.pull_request_target : payload.pull_request;
+    const pullRequest = payload.pull_request;
     const requestedBy = userData[pullRequest.user.login]
     let commentBy = comment.user
     commentBy = userData[commentBy]
@@ -92,6 +92,58 @@ export const sendComment = async ({ userData, payload }) => {
     }
     const result = await sendNotification({ params })
     return result
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
+export const sendClosed = async ({ userData, payload }) => {
+  try {
+    const pullRequest = payload.pull_request;
+    const requestedBy = userData[pullRequest.user.login]
+
+    // pull request merged to develop
+    if (pullRequest.base.ref === 'develop') {
+      const params = {
+        text: "",
+        blocks: [
+          {
+            "type": "header",
+            "text": {
+              "type": "plain_text",
+              "text": "스테이징에 새로운 기능이 올라갔어요 🥳",
+              "emoji": true
+            }
+          },
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: `주인장: <@${requestedBy}>`
+            }
+          },
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: pullRequest.body
+            }
+          },
+          {
+            "type": "divider"
+          }
+        ]
+      }
+      const result = await sendNotification({ params })
+      return result
+    }
+    // pull request merged to master
+    else if (pullRequest.base.ref === 'master') {
+      return true
+    }
+
+    return true
+
   } catch (err) {
     throw new Error(err)
   }

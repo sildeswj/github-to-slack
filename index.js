@@ -1,8 +1,8 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const { context } = require("@actions/github");
-const { sendReviewer, sendComment } = require('./modules/github');
-const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED } = require("./modules/constants");
+const { sendReviewer, sendComment, sendClosed } = require('./modules/github');
+const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = require("./modules/constants");
 
 const app = async () => {
   try {
@@ -19,6 +19,9 @@ const app = async () => {
     }
     else if (payload.action === COMMENT_CRETED || payload.action === COMMENT_EDITED) {
       sendComment({ userData, payload })
+    }
+    else if (payload.action === PULL_REQUEST_CLOSED) {
+
     }
     else {
       console.log('payload: ', payload);
