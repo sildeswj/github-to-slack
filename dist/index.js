@@ -191,6 +191,16 @@ const sendClosed = async ({ userData, payload }) => {
             }
           },
           {
+            "type": "context",
+            "elements": [
+              {
+                "type": "plain_text",
+                "text": "5분 정도 뒤에 확인해주세요.",
+                "emoji": true
+              }
+            ]
+          },
+          {
             type: "section",
             text: {
               type: "mrkdwn",
@@ -237,9 +247,9 @@ __nccwpck_require__.r(__webpack_exports__);
 const core = __nccwpck_require__(2186);
 const axios = __nccwpck_require__(6545);
 
-const sendNotification = async ({ params }) => {
+const sendNotification = async ({ params, toWhere = 'normal' }) => {
   try {
-    const slackWebhookUrl = core.getInput('slack-webhook-url');
+    const slackWebhookUrl = toWhere === 'normal' ? core.getInput('slack-webhook-url') : core.getInput('staging-webhook-url');
     const result = await axios.post(slackWebhookUrl, JSON.stringify(params), {
       headers: { "Content-Type": "application/json" },
     });

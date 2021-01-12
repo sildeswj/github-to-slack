@@ -116,6 +116,16 @@ export const sendClosed = async ({ userData, payload }) => {
             }
           },
           {
+            "type": "context",
+            "elements": [
+              {
+                "type": "plain_text",
+                "text": "5분 정도 뒤에 확인해주세요.",
+                "emoji": true
+              }
+            ]
+          },
+          {
             type: "section",
             text: {
               type: "mrkdwn",

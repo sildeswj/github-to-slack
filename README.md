@@ -35,6 +35,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          staging-webhook-url: ${{ secrets.STAGING_WEBHOOK_URL }}
           github-run-id: ${{ github.run_id }}
           user-data: '{ "githubId1": "slackId1", "githubId2": "slackId2", "githubId3": "slackId3", ... }'
 ```
