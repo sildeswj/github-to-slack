@@ -21,7 +21,7 @@ const app = async () => {
       sendComment({ userData, payload })
     }
     else if (payload.action === PULL_REQUEST_CLOSED) {
-
+      sendClosed({ userData, payload })
     }
     else {
       console.log('payload: ', payload);
