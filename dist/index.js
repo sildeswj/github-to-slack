@@ -27,9 +27,9 @@ const app = async () => {
     else if (payload.action === COMMENT_CRETED || payload.action === COMMENT_EDITED) {
       sendComment({ userData, payload })
     }
-    else {
-      console.log('payload: ', payload);
-    }
+    // else {
+    //   console.log('payload: ', payload);
+    // }
 
   } catch (error) {
     core.setFailed(error);
