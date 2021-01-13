@@ -27,7 +27,7 @@ const app = async () => {
       // console.log('payload00: ', payload);
       console.log('githubToken: ', githubToken);
 
-      const client = new GitHub(token, {});
+      const client = new GitHub(githubToken, {});
       const result = await client.repos.listPullRequestsAssociatedWithCommit({
         owner: context.repo.owner,
         repo: context.repo.repo,
