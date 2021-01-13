@@ -31,7 +31,7 @@ const app = async () => {
       sendClosed({ userData, payload })
     }
     else {
-      console.log('payload: ', payload);
+      console.log('payload00: ', payload);
     }
 
   } catch (error) {
@@ -71,6 +71,8 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
 /* harmony export */   "sendReviewer": () => /* binding */ sendReviewer,
 /* harmony export */   "sendComment": () => /* binding */ sendComment,
+/* harmony export */   "sendToStaging": () => /* binding */ sendToStaging,
+/* harmony export */   "sendToMaster": () => /* binding */ sendToMaster,
 /* harmony export */   "sendClosed": () => /* binding */ sendClosed
 /* harmony export */ });
 const { sendNotification } = __nccwpck_require__(7021);
@@ -172,64 +174,120 @@ const sendComment = async ({ userData, payload }) => {
   }
 }
 
+const sendToStaging = async ({ userData, pullRequest }) => {
+  const requestedBy = userData[pullRequest.user.login]
+
+  const params = {
+    text: "",
+    blocks: [
+      {
+        "type": "header",
+        "text": {
+          "type": "plain_text",
+          "text": "스테이징에 새로운 기능이 올라갔어요 🥳",
+          "emoji": true
+        }
+      },
+      {
+        "type": "context",
+        "elements": [
+          {
+            "type": "plain_text",
+            "text": "5분 정도 뒤에 확인해주세요.",
+            "emoji": true
+          }
+        ]
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `주인장: <@${requestedBy}>`
+        }
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: pullRequest.body
+        }
+      },
+      {
+        "type": "divider"
+      }
+    ]
+  }
+  const toWhere = 'staging'
+  const result = await sendNotification({ params, toWhere })
+  return result
+}
+
+const sendToMaster = async ({ userData, pullRequest, payload }) => {
+  console.log('payload11: ', payload);
+  return true;
+  // const requestedBy = userData[pullRequest.user.login]
+
+  // const params = {
+  //   text: "",
+  //   blocks: [
+  //     {
+  //       "type": "header",
+  //       "text": {
+  //         "type": "plain_text",
+  //         "text": "스테이징에 새로운 기능이 올라갔어요 🥳",
+  //         "emoji": true
+  //       }
+  //     },
+  //     {
+  //       "type": "context",
+  //       "elements": [
+  //         {
+  //           "type": "plain_text",
+  //           "text": "5분 정도 뒤에 확인해주세요.",
+  //           "emoji": true
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       type: "section",
+  //       text: {
+  //         type: "mrkdwn",
+  //         text: `주인장: <@${requestedBy}>`
+  //       }
+  //     },
+  //     {
+  //       type: "section",
+  //       text: {
+  //         type: "mrkdwn",
+  //         text: pullRequest.body
+  //       }
+  //     },
+  //     {
+  //       "type": "divider"
+  //     }
+  //   ]
+  // }
+  // const toWhere = 'normal'
+  // const result = await sendNotification({ params, toWhere })
+  // return result
+}
+
 const sendClosed = async ({ userData, payload }) => {
   try {
     const pullRequest = payload.pull_request;
-    const requestedBy = userData[pullRequest.user.login]
 
-    // pull request merged to develop
-    if (pullRequest.base.ref === 'develop') {
-      const params = {
-        text: "",
-        blocks: [
-          {
-            "type": "header",
-            "text": {
-              "type": "plain_text",
-              "text": "스테이징에 새로운 기능이 올라갔어요 🥳",
-              "emoji": true
-            }
-          },
-          {
-            "type": "context",
-            "elements": [
-              {
-                "type": "plain_text",
-                "text": "5분 정도 뒤에 확인해주세요.",
-                "emoji": true
-              }
-            ]
-          },
-          {
-            type: "section",
-            text: {
-              type: "mrkdwn",
-              text: `주인장: <@${requestedBy}>`
-            }
-          },
-          {
-            type: "section",
-            text: {
-              type: "mrkdwn",
-              text: pullRequest.body
-            }
-          },
-          {
-            "type": "divider"
-          }
-        ]
-      }
-      const toWhere = 'staging'
-      const result = await sendNotification({ params, toWhere })
-      return result
+    switch (pullRequest.base.ref) {
+      // pull request merged to develop
+      case 'develop':
+        sendToStaging({ userData, pullRequest })
+        break;
+      // pull request merged to master
+      case 'master':
+        sendToMaster({ userData, pullRequest, payload })
+        break;
+      default:
+        return true;
     }
-    // pull request merged to master
-    else if (pullRequest.base.ref === 'master') {
-      return true
-    }
-
-    return true
-
   } catch (err) {
     throw new Error(err)
   }

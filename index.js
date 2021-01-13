@@ -24,7 +24,7 @@ const app = async () => {
       sendClosed({ userData, payload })
     }
     else {
-      console.log('payload: ', payload);
+      console.log('payload00: ', payload);
     }
 
   } catch (error) {

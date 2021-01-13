@@ -15,7 +15,7 @@ inputs:
   user-data:
     required: true
   staging-webhook-url:
-    required: false
+    required: true
 outputs:
   result: # id of output
     description: "result"

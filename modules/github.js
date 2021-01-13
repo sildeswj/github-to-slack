@@ -97,64 +97,120 @@ export const sendComment = async ({ userData, payload }) => {
   }
 }
 
+export const sendToStaging = async ({ userData, pullRequest }) => {
+  const requestedBy = userData[pullRequest.user.login]
+
+  const params = {
+    text: "",
+    blocks: [
+      {
+        "type": "header",
+        "text": {
+          "type": "plain_text",
+          "text": "스테이징에 새로운 기능이 올라갔어요 🥳",
+          "emoji": true
+        }
+      },
+      {
+        "type": "context",
+        "elements": [
+          {
+            "type": "plain_text",
+            "text": "5분 정도 뒤에 확인해주세요.",
+            "emoji": true
+          }
+        ]
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `주인장: <@${requestedBy}>`
+        }
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: pullRequest.body
+        }
+      },
+      {
+        "type": "divider"
+      }
+    ]
+  }
+  const toWhere = 'staging'
+  const result = await sendNotification({ params, toWhere })
+  return result
+}
+
+export const sendToMaster = async ({ userData, pullRequest, payload }) => {
+  console.log('payload11: ', payload);
+  return true;
+  // const requestedBy = userData[pullRequest.user.login]
+
+  // const params = {
+  //   text: "",
+  //   blocks: [
+  //     {
+  //       "type": "header",
+  //       "text": {
+  //         "type": "plain_text",
+  //         "text": "스테이징에 새로운 기능이 올라갔어요 🥳",
+  //         "emoji": true
+  //       }
+  //     },
+  //     {
+  //       "type": "context",
+  //       "elements": [
+  //         {
+  //           "type": "plain_text",
+  //           "text": "5분 정도 뒤에 확인해주세요.",
+  //           "emoji": true
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       type: "section",
+  //       text: {
+  //         type: "mrkdwn",
+  //         text: `주인장: <@${requestedBy}>`
+  //       }
+  //     },
+  //     {
+  //       type: "section",
+  //       text: {
+  //         type: "mrkdwn",
+  //         text: pullRequest.body
+  //       }
+  //     },
+  //     {
+  //       "type": "divider"
+  //     }
+  //   ]
+  // }
+  // const toWhere = 'normal'
+  // const result = await sendNotification({ params, toWhere })
+  // return result
+}
+
 export const sendClosed = async ({ userData, payload }) => {
   try {
     const pullRequest = payload.pull_request;
-    const requestedBy = userData[pullRequest.user.login]
 
-    // pull request merged to develop
-    if (pullRequest.base.ref === 'develop') {
-      const params = {
-        text: "",
-        blocks: [
-          {
-            "type": "header",
-            "text": {
-              "type": "plain_text",
-              "text": "스테이징에 새로운 기능이 올라갔어요 🥳",
-              "emoji": true
-            }
-          },
-          {
-            "type": "context",
-            "elements": [
-              {
-                "type": "plain_text",
-                "text": "5분 정도 뒤에 확인해주세요.",
-                "emoji": true
-              }
-            ]
-          },
-          {
-            type: "section",
-            text: {
-              type: "mrkdwn",
-              text: `주인장: <@${requestedBy}>`
-            }
-          },
-          {
-            type: "section",
-            text: {
-              type: "mrkdwn",
-              text: pullRequest.body
-            }
-          },
-          {
-            "type": "divider"
-          }
-        ]
-      }
-      const toWhere = 'staging'
-      const result = await sendNotification({ params, toWhere })
-      return result
+    switch (pullRequest.base.ref) {
+      // pull request merged to develop
+      case 'develop':
+        sendToStaging({ userData, pullRequest })
+        break;
+      // pull request merged to master
+      case 'master':
+        sendToMaster({ userData, pullRequest, payload })
+        break;
+      default:
+        return true;
     }
-    // pull request merged to master
-    else if (pullRequest.base.ref === 'master') {
-      return true
-    }
-
-    return true
-
   } catch (err) {
     throw new Error(err)
   }
