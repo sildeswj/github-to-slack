@@ -55,8 +55,8 @@ const app = async () => {
       // });
 
       const result = await octokit.repos.listPagesBuilds({
-        owner,
-        repo,
+        owner: context.repo.owner,
+        repo: context.repo.repo,
       });
 
       console.log('result: ', result);
