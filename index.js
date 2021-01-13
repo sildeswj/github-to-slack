@@ -5,6 +5,9 @@ import * as github from '@actions/github'
 const { GitHub, context } = require("@actions/github");
 // const { Octokit } = require("@octokit/rest");
 
+const githubToken = core.getInput('github-token');
+const octokit = new github.GitHub(githubToken);
+
 const { sendReviewer, sendComment, sendClosed } = require('./modules/github');
 const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = require("./modules/constants");
 
@@ -32,7 +35,7 @@ const app = async () => {
       // console.log('payload00: ', payload);
       console.log('githubToken: ', githubToken);
       console.log('github@@@ ', github.GitHub);
-      const octokit = new github.GitHub(githubToken);
+      // const octokit = new github.GitHub(githubToken);
 
       // const client = new github.GitHub(githubToken, {});
 

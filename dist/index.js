@@ -16,6 +16,9 @@ const core = __nccwpck_require__(2186);
 const { GitHub, context } = __nccwpck_require__(5438);
 // const { Octokit } = require("@octokit/rest");
 
+const githubToken = core.getInput('github-token');
+const octokit = new _actions_github__WEBPACK_IMPORTED_MODULE_0__.GitHub(githubToken);
+
 const { sendReviewer, sendComment, sendClosed } = __nccwpck_require__(5738);
 const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = __nccwpck_require__(920);
 
@@ -43,7 +46,7 @@ const app = async () => {
       // console.log('payload00: ', payload);
       console.log('githubToken: ', githubToken);
       console.log('github@@@ ', _actions_github__WEBPACK_IMPORTED_MODULE_0__.GitHub);
-      const octokit = new _actions_github__WEBPACK_IMPORTED_MODULE_0__.GitHub(githubToken);
+      // const octokit = new github.GitHub(githubToken);
 
       // const client = new github.GitHub(githubToken, {});
 
