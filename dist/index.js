@@ -47,20 +47,14 @@ const app = async () => {
     }
     else {
       // console.log('payload00: ', payload);
-      console.log('githubToken: ', githubToken);
-      console.log('GitHub@@@ ', _actions_github_lib_utils__WEBPACK_IMPORTED_MODULE_1__.GitHub);
       const octokit = new _actions_github_lib_utils__WEBPACK_IMPORTED_MODULE_1__.GitHub(githubToken);
 
-      // const client = new github.GitHub(githubToken, {});
-
-      // const result = await Octokit.repos.listPullRequestsAssociatedWithCommit({
-
-      // const result = await client.repos.listPullRequestsAssociatedWithCommit({
-      //   owner: context.repo.owner,
-      //   repo: context.repo.repo,
-      //   commit_sha: sha || context.sha,
-      // });
-      // console.log('result: ', result);
+      const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        commit_sha: sha || context.sha,
+      });
+      console.log('result: ', result);
       return true;
     }
   } catch (error) {
