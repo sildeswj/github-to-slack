@@ -7,7 +7,7 @@ inputs:
   github-token: # id of input
     description: "github-token"
     required: true
-    # default: "World"
+    default: "World"
   slack-webhook-url:
     required: true
   github-run-id:

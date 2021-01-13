@@ -59,7 +59,7 @@ const app = async () => {
       // });
 
       const { headers } = await octokit.request('/')
-      console.log(`Scopes: ${headers['x-oauth-scopes']}`)
+      console.log(`headers: `, headers)
 
       const result = await octokit.pulls.get({
         owner: context.repo.owner,
@@ -70,6 +70,7 @@ const app = async () => {
       return true;
     }
   } catch (error) {
+    console.log('error: ', error);
     core.setFailed(error);
   }
 }
