@@ -39,11 +39,12 @@ const app = async () => {
       console.log('octokit.repos: ', octokit.repos);
       console.log('context: ', context.repo, context.sha);
 
-      const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        commit_sha: context.sha,
-      });
+      // const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
+      //   owner: context.repo.owner,
+      //   repo: context.repo.repo,
+      //   commit_sha: context.sha,
+      // });
+      const result = await octokit.repos.listPublic();
       console.log('result: ', result);
       return true;
     }
