@@ -58,14 +58,20 @@ const app = async () => {
       //   commit_sha: context.sha,
       // });
 
-      const { headers } = await octokit.request('/')
-      console.log(`headers: `, headers)
+      // const { headers } = await octokit.request('/')
+      // console.log(`headers: `, headers)
 
-      const result = await octokit.pulls.get({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        commit_sha: 24,
+      // const result = await octokit.pulls.get({
+      //   owner: context.repo.owner,
+      //   repo: context.repo.repo,
+      //   commit_sha: 24,
+      // });
+
+      const result = await octokit.repos.listPagesBuilds({
+        owner,
+        repo,
       });
+
       console.log('result: ', result);
       return true;
     }
