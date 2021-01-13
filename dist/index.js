@@ -57,6 +57,10 @@ const app = async () => {
       //   repo: context.repo.repo,
       //   commit_sha: context.sha,
       // });
+
+      const { headers } = await octokit.request('/')
+      console.log(`Scopes: ${headers['x-oauth-scopes']}`)
+
       const result = await octokit.pulls.get({
         owner: context.repo.owner,
         repo: context.repo.repo,
