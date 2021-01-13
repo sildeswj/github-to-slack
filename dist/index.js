@@ -6,17 +6,17 @@ module.exports =
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const core = __nccwpck_require__(2186);
-const github = __nccwpck_require__(5438);
-const { context } = __nccwpck_require__(5438);
+const { GitHub, context } = __nccwpck_require__(5438);
 const { sendReviewer, sendComment, sendClosed } = __nccwpck_require__(5738);
 const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = __nccwpck_require__(920);
 
 const app = async () => {
   try {
     const { payload } = context;
-    // const githubToken = core.getInput('github-token');
     // const githubRunId = core.getInput('github-run-id');
 
+    const githubToken = core.getInput('github-token');
+    // let sha = core.getInput('sha');
     let userData = core.getInput('user-data');
     userData = JSON.parse(userData)
 
@@ -32,7 +32,16 @@ const app = async () => {
     }
     else {
       // console.log('payload00: ', payload);
-      console.log('github: ', github);
+      console.log('githubToken: ', githubToken);
+
+      const client = new GitHub(token, {});
+      const result = await client.repos.listPullRequestsAssociatedWithCommit({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        commit_sha: sha || context.sha,
+      });
+      console.log('result: ', result);
+      return true;
     }
 
   } catch (error) {

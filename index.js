@@ -1,15 +1,15 @@
 const core = require('@actions/core');
-const github = require('@actions/github');
-const { context } = require("@actions/github");
+const { GitHub, context } = require("@actions/github");
 const { sendReviewer, sendComment, sendClosed } = require('./modules/github');
 const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = require("./modules/constants");
 
 const app = async () => {
   try {
     const { payload } = context;
-    // const githubToken = core.getInput('github-token');
     // const githubRunId = core.getInput('github-run-id');
 
+    const githubToken = core.getInput('github-token');
+    // let sha = core.getInput('sha');
     let userData = core.getInput('user-data');
     userData = JSON.parse(userData)
 
@@ -25,7 +25,16 @@ const app = async () => {
     }
     else {
       // console.log('payload00: ', payload);
-      console.log('github: ', github);
+      console.log('githubToken: ', githubToken);
+
+      const client = new GitHub(token, {});
+      const result = await client.repos.listPullRequestsAssociatedWithCommit({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        commit_sha: sha || context.sha,
+      });
+      console.log('result: ', result);
+      return true;
     }
 
   } catch (error) {
