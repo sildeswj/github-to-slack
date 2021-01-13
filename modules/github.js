@@ -147,9 +147,9 @@ export const sendToStaging = async ({ userData, pullRequest }) => {
 
 export const sendToMaster = async ({ userData, pullRequest, payload }) => {
   // console.log('payload11: ', payload);
-  console.log('_links: ', pull_request._links);
-  console.log('comments: ', pull_request._links.comments);
-  console.log('commits: ', pull_request._links.commits);
+  console.log('_links: ', pullRequest._links);
+  console.log('comments: ', pullRequest._links.comments);
+  console.log('commits: ', pullRequest._links.commits);
   return true;
   // const requestedBy = userData[pullRequest.user.login]
 
