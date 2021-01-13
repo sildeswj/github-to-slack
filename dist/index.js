@@ -9,15 +9,18 @@ module.exports =
 __nccwpck_require__.r(__webpack_exports__);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(5438);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _actions_github_lib_utils__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(3030);
+/* harmony import */ var _actions_github_lib_utils__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github_lib_utils__WEBPACK_IMPORTED_MODULE_1__);
 const core = __nccwpck_require__(2186);
 // const github = require("@actions/github");
 
 
-const { GitHub, context } = __nccwpck_require__(5438);
+
+const { context } = __nccwpck_require__(5438);
 // const { Octokit } = require("@octokit/rest");
 
-const githubToken = core.getInput('github-token');
-const octokit = new _actions_github__WEBPACK_IMPORTED_MODULE_0__.GitHub(githubToken);
+// const githubToken = core.getInput('github-token');
+// const octokit = new github.GitHub(githubToken);
 
 const { sendReviewer, sendComment, sendClosed } = __nccwpck_require__(5738);
 const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = __nccwpck_require__(920);
@@ -45,8 +48,8 @@ const app = async () => {
     else {
       // console.log('payload00: ', payload);
       console.log('githubToken: ', githubToken);
-      console.log('github@@@ ', _actions_github__WEBPACK_IMPORTED_MODULE_0__.GitHub);
-      // const octokit = new github.GitHub(githubToken);
+      console.log('GitHub@@@ ', _actions_github_lib_utils__WEBPACK_IMPORTED_MODULE_1__.GitHub);
+      const octokit = new _actions_github_lib_utils__WEBPACK_IMPORTED_MODULE_1__.GitHub(githubToken);
 
       // const client = new github.GitHub(githubToken, {});
 

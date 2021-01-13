@@ -1,12 +1,13 @@
 const core = require('@actions/core');
 // const github = require("@actions/github");
 import * as github from '@actions/github'
+import { GitHub, getOctokitOptions } from '@actions/github/lib/utils'
 
-const { GitHub, context } = require("@actions/github");
+const { context } = require("@actions/github");
 // const { Octokit } = require("@octokit/rest");
 
-const githubToken = core.getInput('github-token');
-const octokit = new github.GitHub(githubToken);
+// const githubToken = core.getInput('github-token');
+// const octokit = new github.GitHub(githubToken);
 
 const { sendReviewer, sendComment, sendClosed } = require('./modules/github');
 const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = require("./modules/constants");
@@ -34,8 +35,8 @@ const app = async () => {
     else {
       // console.log('payload00: ', payload);
       console.log('githubToken: ', githubToken);
-      console.log('github@@@ ', github.GitHub);
-      // const octokit = new github.GitHub(githubToken);
+      console.log('GitHub@@@ ', GitHub);
+      const octokit = new GitHub(githubToken);
 
       // const client = new github.GitHub(githubToken, {});
 
