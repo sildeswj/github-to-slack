@@ -31,7 +31,8 @@ const app = async () => {
       sendClosed({ userData, payload })
     }
     else {
-      console.log('payload00: ', payload);
+      // console.log('payload00: ', payload);
+      console.log('github: ', github);
     }
 
   } catch (error) {
