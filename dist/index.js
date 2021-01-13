@@ -6,7 +6,7 @@ module.exports =
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const core = __nccwpck_require__(2186);
-const github = __nccwpck_require__(5594);
+const github = __nccwpck_require__(5438);
 const { GitHub, context } = __nccwpck_require__(5438);
 // const { Octokit } = require("@octokit/rest");
 
@@ -8725,14 +8725,6 @@ function wrappy (fn, cb) {
     return ret
   }
 }
-
-
-/***/ }),
-
-/***/ 5594:
-/***/ ((module) => {
-
-module.exports = eval("require")("@actions/github-script");
 
 
 /***/ }),
