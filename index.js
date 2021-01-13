@@ -34,6 +34,8 @@ const app = async () => {
     }
     else {
       // console.log('payload00: ', payload);
+      console.log('octokit.repos: ', octokit.repos);
+      console.log('context: ', context.repo, context.sha);
       const octokit = new GitHub(githubToken);
 
       const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
