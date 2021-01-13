@@ -30,7 +30,7 @@ const app = async () => {
       // console.log('payload00: ', payload);
       console.log('githubToken: ', githubToken);
 
-      const client = new github(githubToken, {});
+      // const client = new github(githubToken, {});
       const result = await Octokit.repos.listPullRequestsAssociatedWithCommit({
         // const result = await client.repos.listPullRequestsAssociatedWithCommit({
         owner: context.repo.owner,
