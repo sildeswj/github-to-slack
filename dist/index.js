@@ -223,10 +223,10 @@ const sendToStaging = async ({ userData, pullRequest }) => {
 }
 
 const sendToMaster = async ({ userData, pullRequest, payload }) => {
-  // console.log('payload11: ', payload);
-  console.log('_links: ', pullRequest._links);
-  console.log('comments: ', pullRequest._links.comments);
-  console.log('commits: ', pullRequest._links.commits);
+  console.log('payload11: ', payload);
+  // console.log('_links: ', pullRequest._links);
+  // console.log('comments: ', pullRequest._links.comments);
+  // console.log('commits: ', pullRequest._links.commits);
   return true;
   // const requestedBy = userData[pullRequest.user.login]
 
