@@ -28,7 +28,7 @@ const app = async () => {
     }
     else {
       // console.log('payload00: ', payload);
-      // console.log('githubToken: ', githubToken);
+      console.log('githubToken: ', githubToken);
 
       const client = new github.GitHub(githubToken, {});
       // const result = await Octokit.repos.listPullRequestsAssociatedWithCommit({
