@@ -3,10 +3,16 @@ module.exports =
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 2932:
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __nccwpck_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
+"use strict";
+__nccwpck_require__.r(__webpack_exports__);
+/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(5438);
+/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_0__);
 const core = __nccwpck_require__(2186);
-const github = __nccwpck_require__(5438);
+// const github = require("@actions/github");
+
+
 const { GitHub, context } = __nccwpck_require__(5438);
 // const { Octokit } = require("@octokit/rest");
 
@@ -36,8 +42,8 @@ const app = async () => {
     else {
       // console.log('payload00: ', payload);
       console.log('githubToken: ', githubToken);
-      console.log('github@@@ ', github.Github);
-      const octokit = new github(githubToken);
+      console.log('github@@@ ', _actions_github__WEBPACK_IMPORTED_MODULE_0__.GitHub);
+      const octokit = new _actions_github__WEBPACK_IMPORTED_MODULE_0__.GitHub(githubToken);
 
       // const client = new github.GitHub(githubToken, {});
 
@@ -8889,6 +8895,18 @@ module.exports = require("zlib");;
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__nccwpck_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => module['default'] :
+/******/ 				() => module;
+/******/ 			__nccwpck_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports

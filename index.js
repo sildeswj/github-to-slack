@@ -1,5 +1,7 @@
 const core = require('@actions/core');
-const github = require("@actions/github");
+// const github = require("@actions/github");
+import * as github from '@actions/github'
+
 const { GitHub, context } = require("@actions/github");
 // const { Octokit } = require("@octokit/rest");
 
@@ -29,8 +31,8 @@ const app = async () => {
     else {
       // console.log('payload00: ', payload);
       console.log('githubToken: ', githubToken);
-      console.log('github@@@ ', github.Github);
-      const octokit = new github(githubToken);
+      console.log('github@@@ ', github.GitHub);
+      const octokit = new github.GitHub(githubToken);
 
       // const client = new github.GitHub(githubToken, {});
 
