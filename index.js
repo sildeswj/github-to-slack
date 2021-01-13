@@ -37,7 +37,7 @@ const app = async () => {
       const octokit = new GitHub(githubToken);
 
       // console.log('octokit.repos: ', octokit.repos);
-      console.log('context: ', context.repo, context.sha);
+      console.log('context: ', context);
 
       // const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
       //   owner: context.repo.owner,
