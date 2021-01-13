@@ -29,18 +29,21 @@ const app = async () => {
     else {
       // console.log('payload00: ', payload);
       console.log('githubToken: ', githubToken);
+      console.log('github@@@ ', github.Github);
+      const octokit = new github.Github(token);
 
-      const client = new github.GitHub(githubToken, {});
+      // const client = new github.GitHub(githubToken, {});
+
       // const result = await Octokit.repos.listPullRequestsAssociatedWithCommit({
-      const result = await client.repos.listPullRequestsAssociatedWithCommit({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        commit_sha: sha || context.sha,
-      });
-      console.log('result: ', result);
+
+      // const result = await client.repos.listPullRequestsAssociatedWithCommit({
+      //   owner: context.repo.owner,
+      //   repo: context.repo.repo,
+      //   commit_sha: sha || context.sha,
+      // });
+      // console.log('result: ', result);
       return true;
     }
-
   } catch (error) {
     core.setFailed(error);
   }
