@@ -36,7 +36,7 @@ const app = async () => {
       // console.log('payload00: ', payload);
       const octokit = new GitHub(githubToken);
 
-      console.log('octokit.repos: ', octokit.repos);
+      // console.log('octokit.repos: ', octokit.repos);
       console.log('context: ', context.repo, context.sha);
 
       // const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
@@ -44,7 +44,11 @@ const app = async () => {
       //   repo: context.repo.repo,
       //   commit_sha: context.sha,
       // });
-      const result = await octokit.repos.listPublic();
+      const result = await octokit.pulls.get({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        commit_sha: 24,
+      });
       console.log('result: ', result);
       return true;
     }
