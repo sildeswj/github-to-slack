@@ -8,6 +8,8 @@ module.exports =
 const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
 const { GitHub, context } = __nccwpck_require__(5438);
+const { Octokit } = __nccwpck_require__(2785);
+
 const { sendReviewer, sendComment, sendClosed } = __nccwpck_require__(5738);
 const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = __nccwpck_require__(920);
 
@@ -36,7 +38,8 @@ const app = async () => {
       console.log('githubToken: ', githubToken);
 
       const client = new github(githubToken, {});
-      const result = await client.repos.listPullRequestsAssociatedWithCommit({
+      const result = await Octokit.repos.listPullRequestsAssociatedWithCommit({
+        // const result = await client.repos.listPullRequestsAssociatedWithCommit({
         owner: context.repo.owner,
         repo: context.repo.repo,
         commit_sha: sha || context.sha,
@@ -8719,6 +8722,14 @@ function wrappy (fn, cb) {
     return ret
   }
 }
+
+
+/***/ }),
+
+/***/ 2785:
+/***/ ((module) => {
+
+module.exports = eval("require")("@octokit/rest");
 
 
 /***/ }),

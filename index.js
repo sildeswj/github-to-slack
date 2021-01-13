@@ -1,6 +1,8 @@
 const core = require('@actions/core');
 const github = require("@actions/github");
 const { GitHub, context } = require("@actions/github");
+const { Octokit } = require("@octokit/rest");
+
 const { sendReviewer, sendComment, sendClosed } = require('./modules/github');
 const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = require("./modules/constants");
 
@@ -29,7 +31,8 @@ const app = async () => {
       console.log('githubToken: ', githubToken);
 
       const client = new github(githubToken, {});
-      const result = await client.repos.listPullRequestsAssociatedWithCommit({
+      const result = await Octokit.repos.listPullRequestsAssociatedWithCommit({
+        // const result = await client.repos.listPullRequestsAssociatedWithCommit({
         owner: context.repo.owner,
         repo: context.repo.repo,
         commit_sha: sha || context.sha,
