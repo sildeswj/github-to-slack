@@ -46,8 +46,9 @@ const app = async () => {
       sendClosed({ userData, payload })
     }
     else {
-      // console.log('payload00: ', payload);
-      const octokit = new _actions_github_lib_utils__WEBPACK_IMPORTED_MODULE_1__.GitHub(githubToken);
+      // const octokit = new GitHub(githubToken);
+
+      const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_0__(githubToken);
 
       // console.log('octokit.repos: ', octokit.repos);
       console.log('context: ', context);

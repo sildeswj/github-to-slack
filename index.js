@@ -33,8 +33,9 @@ const app = async () => {
       sendClosed({ userData, payload })
     }
     else {
-      // console.log('payload00: ', payload);
-      const octokit = new GitHub(githubToken);
+      // const octokit = new GitHub(githubToken);
+
+      const octokit = github(githubToken);
 
       // console.log('octokit.repos: ', octokit.repos);
       console.log('context: ', context);
