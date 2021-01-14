@@ -50,7 +50,7 @@ const app = async () => {
       const octokit = new _actions_github_lib_utils__WEBPACK_IMPORTED_MODULE_1__.GitHub(githubToken);
 
       // console.log('octokit.repos: ', octokit.repos);
-      console.log('commits: ', payload);
+      console.log('context: ', context);
 
       // const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
       //   owner: context.repo.owner,
