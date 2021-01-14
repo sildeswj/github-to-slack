@@ -57,7 +57,7 @@ const app = async () => {
 
 
 
-      const result = await octokit.pulls.get({
+      const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
         owner: context.repo.owner,
         repo: context.repo.repo,
         commit_sha: "859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e",
