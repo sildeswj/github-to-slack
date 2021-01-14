@@ -145,7 +145,7 @@ export const sendToStaging = async ({ userData, pullRequest }) => {
   return result
 }
 
-export const sendToMaster = async ({ userData, pullRequest, payload, octokit }) => {
+export const sendToMaster = async ({ userData, pullRequest, payload, octokit, context }) => {
   console.log('sendToMaster: ', payload);
 
   const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
@@ -205,7 +205,7 @@ export const sendToMaster = async ({ userData, pullRequest, payload, octokit }) 
   // return result
 }
 
-export const sendClosed = async ({ userData, payload, octokit }) => {
+export const sendClosed = async ({ userData, payload, octokit, context }) => {
   try {
     const pullRequest = payload.pull_request;
 
@@ -216,7 +216,7 @@ export const sendClosed = async ({ userData, payload, octokit }) => {
         break;
       // pull request merged to master
       case 'master':
-        sendToMaster({ userData, pullRequest, payload, octokit })
+        sendToMaster({ userData, pullRequest, payload, octokit, context })
         break;
       default:
         return true;

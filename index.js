@@ -31,7 +31,7 @@ const app = async () => {
       sendComment({ userData, payload })
     }
     else if (payload.action === PULL_REQUEST_CLOSED) {
-      sendClosed({ userData, payload, octokit })
+      sendClosed({ userData, payload, octokit, context })
     }
     else {
       // const octokit = new GitHub(githubToken);

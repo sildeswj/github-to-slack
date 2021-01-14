@@ -42,7 +42,7 @@ const app = async () => {
       sendComment({ userData, payload })
     }
     else if (payload.action === PULL_REQUEST_CLOSED) {
-      sendClosed({ userData, payload, octokit })
+      sendClosed({ userData, payload, octokit, context })
     }
     else {
       // const octokit = new GitHub(githubToken);
@@ -281,7 +281,7 @@ const sendToStaging = async ({ userData, pullRequest }) => {
   return result
 }
 
-const sendToMaster = async ({ userData, pullRequest, payload, octokit }) => {
+const sendToMaster = async ({ userData, pullRequest, payload, octokit, context }) => {
   console.log('sendToMaster: ', payload);
 
   const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
@@ -341,7 +341,7 @@ const sendToMaster = async ({ userData, pullRequest, payload, octokit }) => {
   // return result
 }
 
-const sendClosed = async ({ userData, payload, octokit }) => {
+const sendClosed = async ({ userData, payload, octokit, context }) => {
   try {
     const pullRequest = payload.pull_request;
 
@@ -352,7 +352,7 @@ const sendClosed = async ({ userData, payload, octokit }) => {
         break;
       // pull request merged to master
       case 'master':
-        sendToMaster({ userData, pullRequest, payload, octokit })
+        sendToMaster({ userData, pullRequest, payload, octokit, context })
         break;
       default:
         return true;
