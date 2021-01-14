@@ -68,7 +68,7 @@ const app = async () => {
       //   repo: context.repo.repo,
       // });
 
-      const { data: pullRequest } = await octokit.pulls.get({
+      const result = await octokit.pulls.get({
         owner: context.repo.owner,
         repo: context.repo.repo,
         pull_number: 25,
