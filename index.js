@@ -8,7 +8,6 @@ const { context } = require("@actions/github");
 
 // const githubToken = core.getInput('github-token');
 // const octokit = new github.GitHub(githubToken);
-const octokit = github.getOctokit(githubToken);
 
 const { sendReviewer, sendComment, sendClosed } = require('./modules/github');
 const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = require("./modules/constants");
@@ -19,7 +18,8 @@ const app = async () => {
     // const githubRunId = core.getInput('github-run-id');
 
     const githubToken = core.getInput('github-token');
-    // let sha = core.getInput('sha');
+    const octokit = github.getOctokit(githubToken);
+
     let userData = core.getInput('user-data');
     userData = JSON.parse(userData)
 

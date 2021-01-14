@@ -19,7 +19,6 @@ const { context } = __nccwpck_require__(5438);
 
 // const githubToken = core.getInput('github-token');
 // const octokit = new github.GitHub(githubToken);
-const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_0__.getOctokit(githubToken);
 
 const { sendReviewer, sendComment, sendClosed } = __nccwpck_require__(5738);
 const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = __nccwpck_require__(920);
@@ -30,7 +29,8 @@ const app = async () => {
     // const githubRunId = core.getInput('github-run-id');
 
     const githubToken = core.getInput('github-token');
-    // let sha = core.getInput('sha');
+    const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_0__.getOctokit(githubToken);
+
     let userData = core.getInput('user-data');
     userData = JSON.parse(userData)
 
