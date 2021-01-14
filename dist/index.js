@@ -50,13 +50,13 @@ const app = async () => {
       const octokit = new _actions_github_lib_utils__WEBPACK_IMPORTED_MODULE_1__.GitHub(githubToken);
 
       // console.log('octokit.repos: ', octokit.repos);
-      console.log('context: ', context.repo);
+      console.log('context: ', context);
 
-      const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        commit_sha: context.sha,
-      });
+      // const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
+      //   owner: context.repo.owner,
+      //   repo: context.repo.repo,
+      //   commit_sha: context.sha,
+      // });
 
       // const { headers } = await octokit.request('/')
       // console.log(`headers: `, headers)
@@ -73,6 +73,11 @@ const app = async () => {
       //   owner: context.repo.owner,
       //   repo: context.repo.repo,
       // });
+
+      const result = await octokit.repos.listCommits({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+      });
 
       console.log('result: ', result);
       return true;
