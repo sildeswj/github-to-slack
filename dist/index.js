@@ -287,8 +287,8 @@ const sendToMaster = async ({ userData, pullRequest, payload, octokit, context }
   const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
     owner: context.repo.owner,
     repo: context.repo.repo,
-    commit_sha: context.sha
-    // commit_sha: '4ec82dd0e79bdc3a76aaadd091da711118ab3f9b'
+    // commit_sha: context.sha
+    commit_sha: 'e51d7d9'
     // commit_sha: '859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e'
   });
 
