@@ -39,7 +39,7 @@ const app = async () => {
 
       // console.log('octokit.repos: ', octokit.repos);
 
-      // console.log('context: ', context);
+      console.log('context: ', context);
 
 
 
@@ -51,12 +51,12 @@ const app = async () => {
 
       // const result = await octokit.
 
-      const result = await octokit.pulls.listReviewCommentsForRepo({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        // per_page: 100,
-        // page: 1
-      });
+      // const result = await octokit.pulls.listReviewCommentsForRepo({
+      //   owner: context.repo.owner,
+      //   repo: context.repo.repo,
+      //   // per_page: 100,
+      //   // page: 1
+      // });
 
       // const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
       //   owner: context.repo.owner,
@@ -78,7 +78,7 @@ const app = async () => {
       // });
 
 
-      console.log('result: ', result.data);
+      // console.log('result: ', result.data);
       return true;
     }
   } catch (error) {
