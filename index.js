@@ -39,7 +39,7 @@ const app = async () => {
 
       // console.log('octokit.repos: ', octokit.repos);
 
-      console.log('context: ', context);
+      console.log('commits: ', payload.commits);
 
 
 
