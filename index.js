@@ -59,7 +59,7 @@ const app = async () => {
       commits = commits.filter(commit => commit.committer.username === 'web-flow')
 
       const responseAll = commits.map(async commit => {
-        return octokit.repos.listPullRequestsAssociatedWithCommit({
+        return octokit.git.getCommit({
           owner: context.repo.owner,
           repo: context.repo.repo,
           commit_sha: commit.id,
@@ -69,6 +69,10 @@ const app = async () => {
       const pullRequests = await Promise.all(responseAll)
 
       const result = pullRequests.map(pullRequest => pullRequest.data)
+
+
+
+
 
 
       // const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
