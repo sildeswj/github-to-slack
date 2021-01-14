@@ -61,11 +61,18 @@ const app = async () => {
       //   repo: context.repo.repo,
       // });
 
-      const result = await octokit.repos.listCommits({
-        owner: 'sildeswj',
-        // owner: context.repo.owner,
+      // const result = await octokit.repos.listCommits({
+      //   owner: 'sildeswj',
+      //   // owner: context.repo.owner,
+      //   repo: context.repo.repo,
+      // });
+
+      const { data: pullRequest } = await octokit.pulls.get({
+        owner: "sildeswj",
         repo: context.repo.repo,
+        pull_number: 123,
       });
+
 
       console.log('result: ', result);
       return true;
