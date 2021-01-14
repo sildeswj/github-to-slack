@@ -77,7 +77,9 @@ const app = async () => {
         });
       })
 
-      const result = await Promise.all(responseAll)
+      const pullRequests = await Promise.all(responseAll)
+
+      const result = pullRequests.map(pullRequest => pullRequest.data)
 
 
       // const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
