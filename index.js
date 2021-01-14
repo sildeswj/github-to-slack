@@ -68,9 +68,9 @@ const app = async () => {
       // });
 
       const { data: pullRequest } = await octokit.pulls.get({
-        owner: "sildeswj",
+        owner: context.repo.owner,
         repo: context.repo.repo,
-        pull_number: 123,
+        pull_number: 25,
       });
 
 
