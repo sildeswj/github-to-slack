@@ -152,7 +152,7 @@ export const sendToMaster = async ({ userData, pullRequest, payload, octokit, co
     owner: context.repo.owner,
     repo: context.repo.repo,
     // commit_sha: context.sha
-    commit_sha: 'f74f46e'
+    commit_sha: 'fdbd650'
     // commit_sha: '859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e'
   });
 
