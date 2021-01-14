@@ -75,7 +75,8 @@ const app = async () => {
       // });
 
       const result = await octokit.repos.listCommits({
-        owner: context.repo.owner,
+        owner: 'sildeswj',
+        // owner: context.repo.owner,
         repo: context.repo.repo,
       });
 
