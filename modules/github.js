@@ -147,16 +147,17 @@ export const sendToStaging = async ({ userData, pullRequest }) => {
 
 export const sendToMaster = async ({ userData, pullRequest, payload, octokit, context }) => {
   console.log('sendToMaster: ', payload);
+  console.log('context: ', context);
 
-  const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    // commit_sha: context.sha
-    commit_sha: 'fdbd650'
-    // commit_sha: '859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e'
-  });
+  // const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
+  //   owner: context.repo.owner,
+  //   repo: context.repo.repo,
+  //   // commit_sha: context.sha
+  //   commit_sha: 'fdbd650'
+  //   // commit_sha: '859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e'
+  // });
 
-  console.log('result: ', result);
+  // console.log('result: ', result);
   return true;
   // const requestedBy = userData[pullRequest.user.login]
 
