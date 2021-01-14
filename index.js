@@ -51,7 +51,7 @@ const app = async () => {
 
       // const result = await octokit.
 
-      const result = await octokit.pulls.list({
+      const result = await octokit.pulls.listReviewCommentsForRepo({
         owner: context.repo.owner,
         repo: context.repo.repo,
         per_page: 100,
