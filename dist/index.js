@@ -48,7 +48,7 @@ const app = async () => {
     else {
       // const octokit = new GitHub(githubToken);
 
-      const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_0__(githubToken);
+      const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_0__.getOctokit(githubToken);
 
       // console.log('octokit.repos: ', octokit.repos);
       console.log('context: ', context);

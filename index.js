@@ -35,7 +35,7 @@ const app = async () => {
     else {
       // const octokit = new GitHub(githubToken);
 
-      const octokit = github(githubToken);
+      const octokit = github.getOctokit(githubToken);
 
       // console.log('octokit.repos: ', octokit.repos);
       console.log('context: ', context);
