@@ -64,18 +64,18 @@ const app = async () => {
 
       // const result = await octokit.
 
-      // const result = await octokit.pulls.list({
-      //   owner: context.repo.owner,
-      //   repo: context.repo.repo,
-      // });
-
-      const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
+      const result = await octokit.pulls.list({
         owner: context.repo.owner,
         repo: context.repo.repo,
-        // commit_sha: context.sha
-        commit_sha: '713e41080ee059bcf516108bc427e7ace79b0a37'
-        // commit_sha: '859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e'
       });
+
+      // const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
+      //   owner: context.repo.owner,
+      //   repo: context.repo.repo,
+      //   // commit_sha: context.sha
+      //   commit_sha: '713e41080ee059bcf516108bc427e7ace79b0a37'
+      //   // commit_sha: '859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e'
+      // });
 
       // const result = await octokit.repos.listCommits({
       //   owner: context.repo.owner,
@@ -282,7 +282,7 @@ const sendToStaging = async ({ userData, pullRequest }) => {
 }
 
 const sendToMaster = async ({ userData, pullRequest, payload }) => {
-  console.log('payload11: ', payload);
+  console.log('sendToMaster: ', payload);
   // console.log('_links: ', pullRequest._links);
   // console.log('comments: ', pullRequest._links.comments);
   // console.log('commits: ', pullRequest._links.commits);
