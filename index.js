@@ -54,6 +54,8 @@ const app = async () => {
       const result = await octokit.pulls.list({
         owner: context.repo.owner,
         repo: context.repo.repo,
+        per_page: 100,
+        page: 1
       });
 
       // const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
