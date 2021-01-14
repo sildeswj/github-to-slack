@@ -66,13 +66,24 @@ const app = async () => {
       //   id: '859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e',
       //     message: 'Merge pull request #25 from With-Jay/develop\n\nThis is a test',
 
+      let commits = payload.commits
+      commits = commits.map(commit => commit.committer.username === 'web-flow')
 
+      const responseAll = commits.map(async commit => {
+        return octokit.repos.listPullRequestsAssociatedWithCommit({
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          commit_sha: commit.id,
+        });
+      })
 
-      const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        commit_sha: "859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e",
-      });
+      const result = await Promise.all([responseAll])
+
+      // const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
+      //   owner: context.repo.owner,
+      //   repo: context.repo.repo,
+      //   commit_sha: "859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e",
+      // });
 
 
 
