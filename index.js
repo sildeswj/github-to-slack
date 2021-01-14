@@ -1,13 +1,14 @@
 const core = require('@actions/core');
 // const github = require("@actions/github");
 import * as github from '@actions/github'
-import { GitHub, getOctokitOptions } from '@actions/github/lib/utils'
+// import { GitHub, getOctokitOptions } from '@actions/github/lib/utils'
 
 const { context } = require("@actions/github");
 // const { Octokit } = require("@octokit/rest");
 
 // const githubToken = core.getInput('github-token');
 // const octokit = new github.GitHub(githubToken);
+const octokit = github.getOctokit(githubToken);
 
 const { sendReviewer, sendComment, sendClosed } = require('./modules/github');
 const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = require("./modules/constants");
@@ -30,12 +31,11 @@ const app = async () => {
       sendComment({ userData, payload })
     }
     else if (payload.action === PULL_REQUEST_CLOSED) {
-      sendClosed({ userData, payload })
+      sendClosed({ userData, payload, octokit })
     }
     else {
       // const octokit = new GitHub(githubToken);
 
-      const octokit = github.getOctokit(githubToken);
 
       // console.log('octokit.repos: ', octokit.repos);
 

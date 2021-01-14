@@ -9,18 +9,17 @@ module.exports =
 __nccwpck_require__.r(__webpack_exports__);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(5438);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _actions_github_lib_utils__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(3030);
-/* harmony import */ var _actions_github_lib_utils__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github_lib_utils__WEBPACK_IMPORTED_MODULE_1__);
 const core = __nccwpck_require__(2186);
 // const github = require("@actions/github");
 
-
+// import { GitHub, getOctokitOptions } from '@actions/github/lib/utils'
 
 const { context } = __nccwpck_require__(5438);
 // const { Octokit } = require("@octokit/rest");
 
 // const githubToken = core.getInput('github-token');
 // const octokit = new github.GitHub(githubToken);
+const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_0__.getOctokit(githubToken);
 
 const { sendReviewer, sendComment, sendClosed } = __nccwpck_require__(5738);
 const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = __nccwpck_require__(920);
@@ -43,12 +42,11 @@ const app = async () => {
       sendComment({ userData, payload })
     }
     else if (payload.action === PULL_REQUEST_CLOSED) {
-      sendClosed({ userData, payload })
+      sendClosed({ userData, payload, octokit })
     }
     else {
       // const octokit = new GitHub(githubToken);
 
-      const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_0__.getOctokit(githubToken);
 
       // console.log('octokit.repos: ', octokit.repos);
 
@@ -283,11 +281,18 @@ const sendToStaging = async ({ userData, pullRequest }) => {
   return result
 }
 
-const sendToMaster = async ({ userData, pullRequest, payload }) => {
+const sendToMaster = async ({ userData, pullRequest, payload, octokit }) => {
   console.log('sendToMaster: ', payload);
-  // console.log('_links: ', pullRequest._links);
-  // console.log('comments: ', pullRequest._links.comments);
-  // console.log('commits: ', pullRequest._links.commits);
+
+  const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
+    owner: context.repo.owner,
+    repo: context.repo.repo,
+    commit_sha: context.sha
+    // commit_sha: '713e41080ee059bcf516108bc427e7ace79b0a37'
+    // commit_sha: '859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e'
+  });
+
+  console.log('result: ', result);
   return true;
   // const requestedBy = userData[pullRequest.user.login]
 
@@ -336,7 +341,7 @@ const sendToMaster = async ({ userData, pullRequest, payload }) => {
   // return result
 }
 
-const sendClosed = async ({ userData, payload }) => {
+const sendClosed = async ({ userData, payload, octokit }) => {
   try {
     const pullRequest = payload.pull_request;
 
@@ -347,7 +352,7 @@ const sendClosed = async ({ userData, payload }) => {
         break;
       // pull request merged to master
       case 'master':
-        sendToMaster({ userData, pullRequest, payload })
+        sendToMaster({ userData, pullRequest, payload, octokit })
         break;
       default:
         return true;
