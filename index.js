@@ -57,15 +57,16 @@ const app = async () => {
 
       // const result = await octokit.
 
-      // const result = await octokit.repos.listPagesBuilds({
+      const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        commit_sha: context.sha
+      });
+
+      // const result = await octokit.repos.listCommits({
       //   owner: context.repo.owner,
       //   repo: context.repo.repo,
       // });
-
-      const result = await octokit.repos.listCommits({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-      });
 
       // const result = await octokit.pulls.get({
       //   owner: context.repo.owner,
