@@ -64,18 +64,18 @@ const app = async () => {
 
       // const result = await octokit.
 
-      const result = await octokit.pulls.list({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-      });
-
-      // const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
+      // const result = await octokit.pulls.list({
       //   owner: context.repo.owner,
       //   repo: context.repo.repo,
-      //   // commit_sha: context.sha
-      //   // commit_sha: '8d6218c306273b61cb813739736cd251929778e5'
-      //   commit_sha: '859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e'
       // });
+
+      const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        commit_sha: context.sha
+        // commit_sha: '8d6218c306273b61cb813739736cd251929778e5'
+        // commit_sha: '859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e'
+      });
 
       // const result = await octokit.repos.listCommits({
       //   owner: context.repo.owner,
