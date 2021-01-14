@@ -43,11 +43,30 @@ const app = async () => {
 
 
 
-      // const result = await octokit.pulls.get({
-      //   owner: context.repo.owner,
-      //   repo: context.repo.repo,
-      //   commit_sha: 24,
-      // });
+
+
+
+      // committer: {
+      //   email: 'noreply@github.com',
+      //     name: 'GitHub',
+      //       username: 'web-flow'
+      // },
+      // distinct: true,
+      //   id: '859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e',
+      //     message: 'Merge pull request #25 from With-Jay/develop\n\nThis is a test',
+
+
+
+      const result = await octokit.pulls.get({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        commit_sha: "859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e",
+      });
+
+
+
+
+
 
       // const result = await octokit.
 
@@ -78,7 +97,7 @@ const app = async () => {
       // });
 
 
-      // console.log('result: ', result.data);
+      console.log('result: ', result);
       return true;
     }
   } catch (error) {
