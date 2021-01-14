@@ -89,7 +89,7 @@ const app = async () => {
       // });
 
 
-      console.log('result: ', result);
+      console.log('result: ', result.data);
       return true;
     }
   } catch (error) {
