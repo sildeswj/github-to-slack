@@ -67,7 +67,7 @@ const app = async () => {
       //     message: 'Merge pull request #25 from With-Jay/develop\n\nThis is a test',
 
       let commits = payload.commits
-      commits = commits.map(commit => commit.committer.username === 'web-flow')
+      commits = commits.filter(commit => commit.committer.username === 'web-flow')
 
       const responseAll = commits.map(async commit => {
         return octokit.repos.listPullRequestsAssociatedWithCommit({
@@ -78,6 +78,7 @@ const app = async () => {
       })
 
       const result = await Promise.all([responseAll])
+
 
       // const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
       //   owner: context.repo.owner,
