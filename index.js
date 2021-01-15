@@ -1,16 +1,9 @@
 const core = require('@actions/core');
-// const github = require("@actions/github");
 import * as github from '@actions/github'
-// import { GitHub, getOctokitOptions } from '@actions/github/lib/utils'
-
 const { context } = require("@actions/github");
-// const { Octokit } = require("@octokit/rest");
-
-// const githubToken = core.getInput('github-token');
-// const octokit = new github.GitHub(githubToken);
 
 const { sendReviewer, sendComment, sendClosed } = require('./modules/github');
-const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = require("./modules/constants");
+const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED, PUSH } = require("./modules/constants");
 
 const app = async () => {
   try {
@@ -34,6 +27,9 @@ const app = async () => {
       sendClosed({ userData, payload, octokit, context })
     }
     else {
+
+      console.log('payload.action: ', payload.action);
+
       let commits = payload.commits
       commits = commits.filter(commit => commit.committer.username === 'web-flow')
 

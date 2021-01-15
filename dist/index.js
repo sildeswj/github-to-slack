@@ -10,18 +10,11 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(5438);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_0__);
 const core = __nccwpck_require__(2186);
-// const github = require("@actions/github");
-
-// import { GitHub, getOctokitOptions } from '@actions/github/lib/utils'
 
 const { context } = __nccwpck_require__(5438);
-// const { Octokit } = require("@octokit/rest");
-
-// const githubToken = core.getInput('github-token');
-// const octokit = new github.GitHub(githubToken);
 
 const { sendReviewer, sendComment, sendClosed } = __nccwpck_require__(5738);
-const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = __nccwpck_require__(920);
+const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED, PUSH } = __nccwpck_require__(920);
 
 const app = async () => {
   try {
@@ -45,6 +38,9 @@ const app = async () => {
       sendClosed({ userData, payload, octokit, context })
     }
     else {
+
+      console.log('payload.action: ', payload.action);
+
       let commits = payload.commits
       commits = commits.filter(commit => commit.committer.username === 'web-flow')
 
@@ -85,13 +81,15 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony export */   "SYNCHRONIZE": () => /* binding */ SYNCHRONIZE,
 /* harmony export */   "COMMENT_CRETED": () => /* binding */ COMMENT_CRETED,
 /* harmony export */   "COMMENT_EDITED": () => /* binding */ COMMENT_EDITED,
-/* harmony export */   "PULL_REQUEST_CLOSED": () => /* binding */ PULL_REQUEST_CLOSED
+/* harmony export */   "PULL_REQUEST_CLOSED": () => /* binding */ PULL_REQUEST_CLOSED,
+/* harmony export */   "PUSH": () => /* binding */ PUSH
 /* harmony export */ });
 const REVIEW_REQUESTED = 'review_requested'
 const SYNCHRONIZE = 'synchronize'
 const COMMENT_CRETED = 'created'
 const COMMENT_EDITED = 'edited'
 const PULL_REQUEST_CLOSED = 'closed'
+const PUSH = 'push'
 
 /***/ }),
 
@@ -344,14 +342,14 @@ const sendClosed = async ({ userData, payload, octokit, context }) => {
     const pullRequest = payload.pull_request;
 
     switch (pullRequest.base.ref) {
-      // pull request merged to develop
+      // pull request closed (develop)
       case 'develop':
         sendToStaging({ userData, pullRequest })
         break;
-      // pull request merged to master
-      case 'master':
-        sendToMaster({ userData, pullRequest, payload, octokit, context })
-        break;
+      // pull request closed (master)
+      // case 'master':
+      //   sendToMaster({ userData, pullRequest, payload, octokit, context })
+      // break;
       default:
         return true;
     }

@@ -235,14 +235,14 @@ export const sendClosed = async ({ userData, payload, octokit, context }) => {
     const pullRequest = payload.pull_request;
 
     switch (pullRequest.base.ref) {
-      // pull request merged to develop
+      // pull request closed (develop)
       case 'develop':
         sendToStaging({ userData, pullRequest })
         break;
-      // pull request merged to master
-      case 'master':
-        sendToMaster({ userData, pullRequest, payload, octokit, context })
-        break;
+      // pull request closed (master)
+      // case 'master':
+      //   sendToMaster({ userData, pullRequest, payload, octokit, context })
+      // break;
       default:
         return true;
     }
