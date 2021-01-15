@@ -45,27 +45,6 @@ const app = async () => {
       sendClosed({ userData, payload, octokit, context })
     }
     else {
-      // const octokit = new GitHub(githubToken);
-
-
-      // console.log('octokit.repos: ', octokit.repos);
-
-      // console.log('commits: ', payload.commits);
-
-
-
-
-
-
-      // committer: {
-      //   email: 'noreply@github.com',
-      //     name: 'GitHub',
-      //       username: 'web-flow'
-      // },
-      // distinct: true,
-      //   id: '859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e',
-      //     message: 'Merge pull request #25 from With-Jay/develop\n\nThis is a test',
-
       let commits = payload.commits
       commits = commits.filter(commit => commit.committer.username === 'web-flow')
 
@@ -83,48 +62,6 @@ const app = async () => {
         const data = pullRequest.data
         return data[0]
       })
-      // const result = pullRequests.map(pullRequest => pullRequest[0])
-
-      // const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
-      //   owner: context.repo.owner,
-      //   repo: context.repo.repo,
-      //   commit_sha: "859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e",
-      // });
-
-
-
-
-
-
-      // const result = await octokit.
-
-      // const result = await octokit.pulls.listReviewCommentsForRepo({
-      //   owner: context.repo.owner,
-      //   repo: context.repo.repo,
-      //   // per_page: 100,
-      //   // page: 1
-      // });
-
-      // const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
-      //   owner: context.repo.owner,
-      //   repo: context.repo.repo,
-      //   // commit_sha: context.sha
-      //   commit_sha: '713e41080ee059bcf516108bc427e7ace79b0a37'
-      //   // commit_sha: '859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e'
-      // });
-
-      // const result = await octokit.repos.listCommits({
-      //   owner: context.repo.owner,
-      //   repo: context.repo.repo,
-      // });
-
-      // const result = await octokit.pulls.get({
-      //   owner: context.repo.owner,
-      //   repo: context.repo.repo,
-      //   pull_number: 25,
-      // });
-
-
       console.log('result: ', result);
       return true;
     }
@@ -321,16 +258,26 @@ const sendToMaster = async ({ userData, pullRequest, payload, octokit, context }
   console.log('sendToMaster: ', payload);
   console.log('context: ', context);
 
-  // const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
-  //   owner: context.repo.owner,
-  //   repo: context.repo.repo,
-  //   // commit_sha: context.sha
-  //   commit_sha: 'fdbd650'
-  //   // commit_sha: '859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e'
-  // });
+  let commits = payload.commits
+  commits = commits.filter(commit => commit.committer.username === 'web-flow')
 
-  // console.log('result: ', result);
+  const responseAll = commits.map(async commit => {
+    return octokit.repos.listPullRequestsAssociatedWithCommit({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      commit_sha: commit.id,
+    });
+  })
+
+  let pullRequests = await Promise.all(responseAll)
+
+  const result = pullRequests.map(pullRequest => {
+    const data = pullRequest.data
+    return data[0]
+  })
+  console.log('result: ', result);
   return true;
+
   // const requestedBy = userData[pullRequest.user.login]
 
   // const params = {

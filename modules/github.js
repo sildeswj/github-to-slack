@@ -149,16 +149,26 @@ export const sendToMaster = async ({ userData, pullRequest, payload, octokit, co
   console.log('sendToMaster: ', payload);
   console.log('context: ', context);
 
-  // const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
-  //   owner: context.repo.owner,
-  //   repo: context.repo.repo,
-  //   // commit_sha: context.sha
-  //   commit_sha: 'fdbd650'
-  //   // commit_sha: '859e1bbfaf6abe2dcaf4c2a0edd006489e78c46e'
-  // });
+  let commits = payload.commits
+  commits = commits.filter(commit => commit.committer.username === 'web-flow')
 
-  // console.log('result: ', result);
+  const responseAll = commits.map(async commit => {
+    return octokit.repos.listPullRequestsAssociatedWithCommit({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      commit_sha: commit.id,
+    });
+  })
+
+  let pullRequests = await Promise.all(responseAll)
+
+  const result = pullRequests.map(pullRequest => {
+    const data = pullRequest.data
+    return data[0]
+  })
+  console.log('result: ', result);
   return true;
+
   // const requestedBy = userData[pullRequest.user.login]
 
   // const params = {
