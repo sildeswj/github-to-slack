@@ -287,9 +287,8 @@ const sendToMaster = async ({ userData, context, octokit }) => {
           }
         ]
       },
-      {
-        ...messages
-      },
+      ...messages
+      ,
       // {
       //   type: "section",
       //   text: {
