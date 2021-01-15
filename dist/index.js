@@ -256,6 +256,7 @@ const sendToMaster = async ({ userData, context, octokit }) => {
     text = text.replace(/^\s+|\s+$/g, '');
     let asanaLink = data.body.split('### Asana URL')[1];
     asanaLink = asanaLink.replace(/^\s+|\s+$/g, '');
+    console.log('text: ', text);
     console.log('asanaLink: ', asanaLink);
 
     const returnValue = {
