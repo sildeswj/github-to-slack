@@ -247,24 +247,22 @@ const sendToMaster = async ({ userData, context, octokit }) => {
     });
   })
   let pullRequests = await Promise.all(responseAll)
-  const messages = pullRequests.map(pullRequest => {
+  let messages = pullRequests.map(pullRequest => {
     let data = pullRequest.data
     data = data[0]
-
-    const owner = userData[data.user.login]
+    // const owner = userData[data.user.login]
+    const text = data.body.split('### Changes')[0];
     const returnValue = {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `주인장: <@${owner}>\n ${data.body}`
+        text: `${text}`
+        // text: `주인장: <@${owner}>\n ${data.body}`
       }
     }
-
     return returnValue
   })
-
-  console.log('messages: ', messages);
-
+  messages.pop();
 
   const params = {
     text: "",
@@ -273,7 +271,7 @@ const sendToMaster = async ({ userData, context, octokit }) => {
         "type": "header",
         "text": {
           "type": "plain_text",
-          "text": "새로운 기능이 배포됐어요 🥳",
+          "text": " 🎉 새로운 기능이 배포됐어요  🎉",
           "emoji": true
         }
       },
@@ -289,20 +287,6 @@ const sendToMaster = async ({ userData, context, octokit }) => {
       },
       ...messages
       ,
-      // {
-      //   type: "section",
-      //   text: {
-      //     type: "mrkdwn",
-      //     text: `주인장: <@${requestedBy}>`
-      //   }
-      // },
-      // {
-      //   type: "section",
-      //   text: {
-      //     type: "mrkdwn",
-      //     text: pullRequest.body
-      //   }
-      // },
       {
         "type": "divider"
       }
