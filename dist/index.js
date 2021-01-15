@@ -251,8 +251,10 @@ const sendToMaster = async ({ userData, context, octokit }) => {
     let data = pullRequest.data
     data = data[0]
     // const owner = userData[data.user.login]
-    const text = data.body.split('### Changes')[0];
+    let text = data.body.split('### Changes')[0];
+    text = data.body.split('### Summary')[1];
     const asanaLink = data.body.split('### Asana URL')[1];
+    console.log('asanaLink: ', asanaLink);
     const returnValue = {
       type: "section",
       text: {
