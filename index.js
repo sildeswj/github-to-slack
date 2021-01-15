@@ -2,8 +2,8 @@ const core = require('@actions/core');
 import * as github from '@actions/github'
 const { context } = require("@actions/github");
 
-const { sendReviewer, sendComment, sendClosed } = require('./modules/github');
-const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED, PUSH } = require("./modules/constants");
+const { sendReviewer, sendComment, sendClosed, sendToMaster } = require('./modules/github');
+const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = require("./modules/constants");
 
 const app = async () => {
   try {
@@ -26,28 +26,11 @@ const app = async () => {
     else if (payload.action === PULL_REQUEST_CLOSED) {
       sendClosed({ userData, payload, octokit, context })
     }
+    // push event
+    else if (payload.pusher) {
+      sendToMaster({ userData, octokit, context })
+    }
     else {
-
-      console.log('payload.action: ', payload);
-
-      let commits = payload.commits
-      commits = commits.filter(commit => commit.committer.username === 'web-flow')
-
-      const responseAll = commits.map(async commit => {
-        return octokit.repos.listPullRequestsAssociatedWithCommit({
-          owner: context.repo.owner,
-          repo: context.repo.repo,
-          commit_sha: commit.id,
-        });
-      })
-
-      let pullRequests = await Promise.all(responseAll)
-
-      const result = pullRequests.map(pullRequest => {
-        const data = pullRequest.data
-        return data[0]
-      })
-      console.log('result: ', result);
       return true;
     }
   } catch (error) {

@@ -13,8 +13,8 @@ const core = __nccwpck_require__(2186);
 
 const { context } = __nccwpck_require__(5438);
 
-const { sendReviewer, sendComment, sendClosed } = __nccwpck_require__(5738);
-const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED, PUSH } = __nccwpck_require__(920);
+const { sendReviewer, sendComment, sendClosed, sendToMaster } = __nccwpck_require__(5738);
+const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = __nccwpck_require__(920);
 
 const app = async () => {
   try {
@@ -37,28 +37,11 @@ const app = async () => {
     else if (payload.action === PULL_REQUEST_CLOSED) {
       sendClosed({ userData, payload, octokit, context })
     }
+    // push event
+    else if (payload.pusher) {
+      sendToMaster({ userData, octokit, context })
+    }
     else {
-
-      console.log('payload.action: ', payload);
-
-      let commits = payload.commits
-      commits = commits.filter(commit => commit.committer.username === 'web-flow')
-
-      const responseAll = commits.map(async commit => {
-        return octokit.repos.listPullRequestsAssociatedWithCommit({
-          owner: context.repo.owner,
-          repo: context.repo.repo,
-          commit_sha: commit.id,
-        });
-      })
-
-      let pullRequests = await Promise.all(responseAll)
-
-      const result = pullRequests.map(pullRequest => {
-        const data = pullRequest.data
-        return data[0]
-      })
-      console.log('result: ', result);
       return true;
     }
   } catch (error) {
@@ -81,15 +64,13 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony export */   "SYNCHRONIZE": () => /* binding */ SYNCHRONIZE,
 /* harmony export */   "COMMENT_CRETED": () => /* binding */ COMMENT_CRETED,
 /* harmony export */   "COMMENT_EDITED": () => /* binding */ COMMENT_EDITED,
-/* harmony export */   "PULL_REQUEST_CLOSED": () => /* binding */ PULL_REQUEST_CLOSED,
-/* harmony export */   "PUSH": () => /* binding */ PUSH
+/* harmony export */   "PULL_REQUEST_CLOSED": () => /* binding */ PULL_REQUEST_CLOSED
 /* harmony export */ });
 const REVIEW_REQUESTED = 'review_requested'
 const SYNCHRONIZE = 'synchronize'
 const COMMENT_CRETED = 'created'
 const COMMENT_EDITED = 'edited'
 const PULL_REQUEST_CLOSED = 'closed'
-const PUSH = 'push'
 
 /***/ }),
 
@@ -252,89 +233,85 @@ const sendToStaging = async ({ userData, pullRequest }) => {
   return result
 }
 
-const sendToMaster = async ({ userData, pullRequest, payload, octokit, context }) => {
-  console.log('sendToMaster: ', payload);
-  console.log('context: ', context);
+const sendToMaster = async ({ userData, context, octokit }) => {
+  const { payload } = context;
 
   let commits = payload.commits
-  console.log('commits: ', commits);
-  // commits = commits.filter(commit => commit.committer.username === 'web-flow')
+  commits = commits.filter(commit => commit.committer.username === 'web-flow')
 
-
-
-
-  const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    commit_sha: context.sha,
+  const responseAll = commits.map(async commit => {
+    return octokit.repos.listPullRequestsAssociatedWithCommit({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      commit_sha: commit.id,
+    });
   })
-  console.log('result: ', result);
+  let pullRequests = await Promise.all(responseAll)
+  const messages = pullRequests.map(pullRequest => {
+    let data = pullRequest.data
+    data = data[0]
 
-  // const responseAll = commits.map(async commit => {
-  //   return octokit.repos.listPullRequestsAssociatedWithCommit({
-  //     owner: context.repo.owner,
-  //     repo: context.repo.repo,
-  //     commit_sha: commit.id,
-  //   });
-  // })
+    const owner = userData[data.user.login]
+    const returnValue = {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `주인장: <@${owner}>\n ${data.body}`
+      }
+    }
 
-  // let pullRequests = await Promise.all(responseAll)
+    return returnValue
+  })
 
-  // const result = pullRequests.map(pullRequest => {
-  //   const data = pullRequest.data
-  //   return data[0]
-  // })
-  // console.log('result: ', result);
-  return true;
-
-
+  console.log('messages: ', messages);
 
 
-  // const requestedBy = userData[pullRequest.user.login]
-
-  // const params = {
-  //   text: "",
-  //   blocks: [
-  //     {
-  //       "type": "header",
-  //       "text": {
-  //         "type": "plain_text",
-  //         "text": "스테이징에 새로운 기능이 올라갔어요 🥳",
-  //         "emoji": true
-  //       }
-  //     },
-  //     {
-  //       "type": "context",
-  //       "elements": [
-  //         {
-  //           "type": "plain_text",
-  //           "text": "5분 정도 뒤에 확인해주세요.",
-  //           "emoji": true
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       type: "section",
-  //       text: {
-  //         type: "mrkdwn",
-  //         text: `주인장: <@${requestedBy}>`
-  //       }
-  //     },
-  //     {
-  //       type: "section",
-  //       text: {
-  //         type: "mrkdwn",
-  //         text: pullRequest.body
-  //       }
-  //     },
-  //     {
-  //       "type": "divider"
-  //     }
-  //   ]
-  // }
-  // const toWhere = 'normal'
-  // const result = await sendNotification({ params, toWhere })
-  // return result
+  const params = {
+    text: "",
+    blocks: [
+      {
+        "type": "header",
+        "text": {
+          "type": "plain_text",
+          "text": "새로운 기능이 배포됐어요 🥳",
+          "emoji": true
+        }
+      },
+      {
+        "type": "context",
+        "elements": [
+          {
+            "type": "plain_text",
+            "text": "5분 정도 뒤에 확인해주세요.",
+            "emoji": true
+          }
+        ]
+      },
+      {
+        ...messages
+      },
+      // {
+      //   type: "section",
+      //   text: {
+      //     type: "mrkdwn",
+      //     text: `주인장: <@${requestedBy}>`
+      //   }
+      // },
+      // {
+      //   type: "section",
+      //   text: {
+      //     type: "mrkdwn",
+      //     text: pullRequest.body
+      //   }
+      // },
+      {
+        "type": "divider"
+      }
+    ]
+  }
+  const toWhere = 'normal'
+  const result = await sendNotification({ params, toWhere })
+  return result
 }
 
 const sendClosed = async ({ userData, payload, octokit, context }) => {

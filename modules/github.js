@@ -145,89 +145,85 @@ export const sendToStaging = async ({ userData, pullRequest }) => {
   return result
 }
 
-export const sendToMaster = async ({ userData, pullRequest, payload, octokit, context }) => {
-  console.log('sendToMaster: ', payload);
-  console.log('context: ', context);
+export const sendToMaster = async ({ userData, context, octokit }) => {
+  const { payload } = context;
 
   let commits = payload.commits
-  console.log('commits: ', commits);
-  // commits = commits.filter(commit => commit.committer.username === 'web-flow')
+  commits = commits.filter(commit => commit.committer.username === 'web-flow')
 
-
-
-
-  const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    commit_sha: context.sha,
+  const responseAll = commits.map(async commit => {
+    return octokit.repos.listPullRequestsAssociatedWithCommit({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      commit_sha: commit.id,
+    });
   })
-  console.log('result: ', result);
+  let pullRequests = await Promise.all(responseAll)
+  const messages = pullRequests.map(pullRequest => {
+    let data = pullRequest.data
+    data = data[0]
 
-  // const responseAll = commits.map(async commit => {
-  //   return octokit.repos.listPullRequestsAssociatedWithCommit({
-  //     owner: context.repo.owner,
-  //     repo: context.repo.repo,
-  //     commit_sha: commit.id,
-  //   });
-  // })
+    const owner = userData[data.user.login]
+    const returnValue = {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `주인장: <@${owner}>\n ${data.body}`
+      }
+    }
 
-  // let pullRequests = await Promise.all(responseAll)
+    return returnValue
+  })
 
-  // const result = pullRequests.map(pullRequest => {
-  //   const data = pullRequest.data
-  //   return data[0]
-  // })
-  // console.log('result: ', result);
-  return true;
-
-
+  console.log('messages: ', messages);
 
 
-  // const requestedBy = userData[pullRequest.user.login]
-
-  // const params = {
-  //   text: "",
-  //   blocks: [
-  //     {
-  //       "type": "header",
-  //       "text": {
-  //         "type": "plain_text",
-  //         "text": "스테이징에 새로운 기능이 올라갔어요 🥳",
-  //         "emoji": true
-  //       }
-  //     },
-  //     {
-  //       "type": "context",
-  //       "elements": [
-  //         {
-  //           "type": "plain_text",
-  //           "text": "5분 정도 뒤에 확인해주세요.",
-  //           "emoji": true
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       type: "section",
-  //       text: {
-  //         type: "mrkdwn",
-  //         text: `주인장: <@${requestedBy}>`
-  //       }
-  //     },
-  //     {
-  //       type: "section",
-  //       text: {
-  //         type: "mrkdwn",
-  //         text: pullRequest.body
-  //       }
-  //     },
-  //     {
-  //       "type": "divider"
-  //     }
-  //   ]
-  // }
-  // const toWhere = 'normal'
-  // const result = await sendNotification({ params, toWhere })
-  // return result
+  const params = {
+    text: "",
+    blocks: [
+      {
+        "type": "header",
+        "text": {
+          "type": "plain_text",
+          "text": "새로운 기능이 배포됐어요 🥳",
+          "emoji": true
+        }
+      },
+      {
+        "type": "context",
+        "elements": [
+          {
+            "type": "plain_text",
+            "text": "5분 정도 뒤에 확인해주세요.",
+            "emoji": true
+          }
+        ]
+      },
+      {
+        ...messages
+      },
+      // {
+      //   type: "section",
+      //   text: {
+      //     type: "mrkdwn",
+      //     text: `주인장: <@${requestedBy}>`
+      //   }
+      // },
+      // {
+      //   type: "section",
+      //   text: {
+      //     type: "mrkdwn",
+      //     text: pullRequest.body
+      //   }
+      // },
+      {
+        "type": "divider"
+      }
+    ]
+  }
+  const toWhere = 'normal'
+  const result = await sendNotification({ params, toWhere })
+  return result
 }
 
 export const sendClosed = async ({ userData, payload, octokit, context }) => {
