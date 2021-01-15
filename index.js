@@ -66,10 +66,10 @@ const app = async () => {
         });
       })
 
-      const pullRequests = await Promise.all(responseAll)
+      let pullRequests = await Promise.all(responseAll)
 
-      const result = pullRequests.map(pullRequest => pullRequest.data)
-
+      pullRequests = pullRequests.map(pullRequest => pullRequest.data)
+      const result = pullRequests.map(pullRequest => pullRequest[0])
 
       // const result = await octokit.repos.listPullRequestsAssociatedWithCommit({
       //   owner: context.repo.owner,
