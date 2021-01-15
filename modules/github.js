@@ -164,11 +164,12 @@ export const sendToMaster = async ({ userData, context, octokit }) => {
     data = data[0]
     // const owner = userData[data.user.login]
     const text = data.body.split('### Changes')[0];
+    const asanaLink = data.body.split('### Asana URL')[1];
     const returnValue = {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `${text}`
+        text: `- ${text} 아사나 링크: ${asanaLink}`
         // text: `주인장: <@${owner}>\n ${data.body}`
       }
     }
