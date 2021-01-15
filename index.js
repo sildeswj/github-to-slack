@@ -28,7 +28,7 @@ const app = async () => {
     }
     else {
 
-      console.log('payload.action: ', payload.action);
+      console.log('payload.action: ', payload);
 
       let commits = payload.commits
       commits = commits.filter(commit => commit.committer.username === 'web-flow')
