@@ -165,23 +165,13 @@ export const sendToMaster = async ({ userData, context, octokit }) => {
     // const owner = userData[data.user.login]
     let text = data.body.split('### Changes')[0];
     text = text.split('### Summary')[1];
-    // text = text.replace(/\n/g, " ");
-
     text = text ? text.replace(/[\r\n\x0B\x0C\u0085\u2028\u2029]+/g, " ") : text;
-
-
-    // text = text.replace('\n', '');
-    // text = text.replace(/^\s+|\s+$/g, '');
-    // let asanaLink = data.body.split('### Asana URL')[1];
-    // asanaLink = asanaLink.replace(/^\s+|\s+$/g, '');
-    // console.log('text: ', text);
-    // console.log('asanaLink: ', asanaLink);
 
     const returnValue = {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `ll${text}kk`
+        text: `• ${text}`
         // text: `• ${text} 아사나 링크: ${asanaLink}`
         // text: `주인장: <@${owner}>\n ${data.body}`
       }
