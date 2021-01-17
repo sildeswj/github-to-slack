@@ -253,7 +253,10 @@ const sendToMaster = async ({ userData, context, octokit }) => {
     // const owner = userData[data.user.login]
     let text = data.body.split('### Changes')[0];
     text = text.split('### Summary')[1];
-    text = text.replace(/\n/g, " ");
+    // text = text.replace(/\n/g, " ");
+
+    text = text.replace(/[\r\n\x0B\x0C\u0085\u2028\u2029]+/g, " ");
+
 
     // text = text.replace('\n', '');
     // text = text.replace(/^\s+|\s+$/g, '');
