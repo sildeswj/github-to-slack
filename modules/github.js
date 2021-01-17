@@ -167,9 +167,7 @@ export const sendToMaster = async ({ userData, context, octokit }) => {
     text = text.split('### Summary')[1];
     // text = text.replace(/\n/g, " ");
 
-    console.log('data.body: ', data.body);
-
-    text = text.replace(/[\r\n\x0B\x0C\u0085\u2028\u2029]+/g, " ");
+    text = text ? text.replace(/[\r\n\x0B\x0C\u0085\u2028\u2029]+/g, " ") : text;
 
 
     // text = text.replace('\n', '');
