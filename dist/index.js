@@ -259,7 +259,7 @@ const sendToMaster = async ({ userData, context, octokit }) => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `• ${text}`
+        text: `🏷️ ${text}`
         // text: `• ${text} 아사나 링크: ${asanaLink}`
         // text: `주인장: <@${owner}>\n ${data.body}`
       }
