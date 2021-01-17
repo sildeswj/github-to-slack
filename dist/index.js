@@ -296,7 +296,7 @@ const sendToMaster = async ({ userData, context, octokit }) => {
       }
     ]
   }
-  const toWhere = 'normal'
+  const toWhere = 'staging'
   const result = await sendNotification({ params, toWhere })
   return result
 }
