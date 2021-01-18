@@ -211,8 +211,9 @@ export const sendToMaster = async ({ userData, context, octokit }) => {
     ]
   }
   const toWhere = 'staging'
-  const result = await sendNotification({ params, toWhere })
-  return result
+  // const result = await sendNotification({ params, toWhere })
+  // return result
+  return true;
 }
 
 export const sendClosed = async ({ userData, payload, octokit, context }) => {
