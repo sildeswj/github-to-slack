@@ -236,6 +236,8 @@ const sendToStaging = async ({ userData, pullRequest }) => {
 const sendToMaster = async ({ userData, context, octokit }) => {
   const { payload } = context;
 
+  console.log('payload: ', payload);
+
   let commits = payload.commits
   commits = commits.filter(commit => commit.committer.username === 'web-flow')
 
