@@ -259,11 +259,14 @@ const sendToMaster = async ({ userData, context, octokit }) => {
     text = text.split('### Summary')[1];
     text = text ? text.replace(/[\r\n\x0B\x0C\u0085\u2028\u2029]+/g, " ") : text;
 
+    let asanaLink = data.body.split('### Asana URL')[1];
+    asanaLink = asanaLink ? asanaLink.replace(/[\r\n\x0B\x0C\u0085\u2028\u2029]+/g, " ") : asanaLink;
+
     const returnValue = {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `🏷️ ${text}`
+        text: `🏷️ ${text} 아사나: ${asanaLink}`
         // text: `• ${text} 아사나 링크: ${asanaLink}`
         // text: `주인장: <@${owner}>\n ${data.body}`
       }
@@ -301,9 +304,9 @@ const sendToMaster = async ({ userData, context, octokit }) => {
     ]
   }
   const toWhere = 'staging'
-  const result = await sendNotification({ params, toWhere })
-  return result
-  // return true;
+  // const result = await sendNotification({ params, toWhere })
+  // return result
+  return true;
 }
 
 const sendClosed = async ({ userData, payload, octokit, context }) => {
