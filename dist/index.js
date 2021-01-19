@@ -14,7 +14,7 @@ const core = __nccwpck_require__(2186);
 const { context } = __nccwpck_require__(5438);
 
 const { sendReviewer, sendComment, sendClosed, sendToMaster } = __nccwpck_require__(5738);
-const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = __nccwpck_require__(920);
+const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED, MASTER_BRANCH } = __nccwpck_require__(920);
 
 const app = async () => {
   try {
@@ -38,7 +38,7 @@ const app = async () => {
       sendClosed({ userData, payload, octokit, context })
     }
     // push event
-    else if (payload.pusher) {
+    else if (payload.pusher && payload.ref === MASTER_BRANCH) {
       sendToMaster({ userData, octokit, context })
     }
     else {
@@ -64,13 +64,15 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony export */   "SYNCHRONIZE": () => /* binding */ SYNCHRONIZE,
 /* harmony export */   "COMMENT_CRETED": () => /* binding */ COMMENT_CRETED,
 /* harmony export */   "COMMENT_EDITED": () => /* binding */ COMMENT_EDITED,
-/* harmony export */   "PULL_REQUEST_CLOSED": () => /* binding */ PULL_REQUEST_CLOSED
+/* harmony export */   "PULL_REQUEST_CLOSED": () => /* binding */ PULL_REQUEST_CLOSED,
+/* harmony export */   "MASTER_BRANCH": () => /* binding */ MASTER_BRANCH
 /* harmony export */ });
 const REVIEW_REQUESTED = 'review_requested'
 const SYNCHRONIZE = 'synchronize'
 const COMMENT_CRETED = 'created'
 const COMMENT_EDITED = 'edited'
 const PULL_REQUEST_CLOSED = 'closed'
+const MASTER_BRANCH = 'refs/heads/master'
 
 /***/ }),
 

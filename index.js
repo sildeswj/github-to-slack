@@ -3,7 +3,7 @@ import * as github from '@actions/github'
 const { context } = require("@actions/github");
 
 const { sendReviewer, sendComment, sendClosed, sendToMaster } = require('./modules/github');
-const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED } = require("./modules/constants");
+const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED, MASTER_BRANCH } = require("./modules/constants");
 
 const app = async () => {
   try {
@@ -27,7 +27,7 @@ const app = async () => {
       sendClosed({ userData, payload, octokit, context })
     }
     // push event
-    else if (payload.pusher) {
+    else if (payload.pusher && payload.ref === MASTER_BRANCH) {
       sendToMaster({ userData, octokit, context })
     }
     else {
