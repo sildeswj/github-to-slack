@@ -165,10 +165,10 @@ export const sendToMaster = async ({ userData, context, octokit }) => {
     // const owner = userData[data.user.login]
     let text = data.body.split('### Changes')[0] ? data.body.split('### Changes')[0] : '없음';
     text = text.split('### Summary')[1] ? text.split('### Summary')[1] : text;
-    text = text ? text.replace(/[\r\n\x0B\x0C\u0085\u2028\u2029]+/g, " ") : text;
+    // text = text ? text.replace(/[\r\n\x0B\x0C\u0085\u2028\u2029]+/g, " ") : text;
 
     let asanaLink = data.body.split('### Asana URL')[1] ? data.body.split('### Asana URL')[1] : '없음';
-    asanaLink = asanaLink ? asanaLink.replace(/[\r\n\x0B\x0C\u0085\u2028\u2029]+/g, " ") : asanaLink;
+    // asanaLink = asanaLink ? asanaLink.replace(/[\r\n\x0B\x0C\u0085\u2028\u2029]+/g, " ") : asanaLink;
 
     const returnValue = {
       type: "section",
