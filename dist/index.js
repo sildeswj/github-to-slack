@@ -238,8 +238,6 @@ const sendToStaging = async ({ userData, pullRequest }) => {
 const sendToMaster = async ({ userData, context, octokit }) => {
   const { payload } = context;
 
-  console.log('payload: ', payload);
-
   let commits = payload.commits
   commits = commits.filter(commit => commit.committer.username === 'web-flow')
 
@@ -271,6 +269,7 @@ const sendToMaster = async ({ userData, context, octokit }) => {
         // text: `주인장: <@${owner}>\n ${data.body}`
       }
     }
+    console.log('returnValue: ', returnValue);
     return returnValue
   })
   messages.pop();
