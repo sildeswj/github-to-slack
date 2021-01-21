@@ -2,8 +2,8 @@ const core = require('@actions/core');
 import * as github from '@actions/github'
 const { context } = require("@actions/github");
 
-const { sendReviewer, sendComment, sendClosed, sendToMaster } = require('./modules/github');
-const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED, MASTER_BRANCH } = require("./modules/constants");
+const { sendReviewer, sendComment, sendMerged, sendToMaster } = require('./modules/github');
+const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_MERGED, MASTER_BRANCH } = require("./modules/constants");
 
 const app = async () => {
   try {
@@ -23,8 +23,8 @@ const app = async () => {
     else if (payload.action === COMMENT_CRETED || payload.action === COMMENT_EDITED) {
       sendComment({ userData, payload })
     }
-    else if (payload.action === PULL_REQUEST_CLOSED) {
-      sendClosed({ userData, payload, octokit, context })
+    else if (payload.action === PULL_REQUEST_MERGED) {
+      sendMerged({ userData, payload, octokit, context })
     }
     // push event
     else if (payload.pusher && payload.ref === MASTER_BRANCH) {

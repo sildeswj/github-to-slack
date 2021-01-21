@@ -13,8 +13,8 @@ const core = __nccwpck_require__(2186);
 
 const { context } = __nccwpck_require__(5438);
 
-const { sendReviewer, sendComment, sendClosed, sendToMaster } = __nccwpck_require__(5738);
-const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_CLOSED, MASTER_BRANCH } = __nccwpck_require__(920);
+const { sendReviewer, sendComment, sendMerged, sendToMaster } = __nccwpck_require__(5738);
+const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_MERGED, MASTER_BRANCH } = __nccwpck_require__(920);
 
 const app = async () => {
   try {
@@ -34,8 +34,8 @@ const app = async () => {
     else if (payload.action === COMMENT_CRETED || payload.action === COMMENT_EDITED) {
       sendComment({ userData, payload })
     }
-    else if (payload.action === PULL_REQUEST_CLOSED) {
-      sendClosed({ userData, payload, octokit, context })
+    else if (payload.action === PULL_REQUEST_MERGED) {
+      sendMerged({ userData, payload, octokit, context })
     }
     // push event
     else if (payload.pusher && payload.ref === MASTER_BRANCH) {
@@ -64,14 +64,14 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony export */   "SYNCHRONIZE": () => /* binding */ SYNCHRONIZE,
 /* harmony export */   "COMMENT_CRETED": () => /* binding */ COMMENT_CRETED,
 /* harmony export */   "COMMENT_EDITED": () => /* binding */ COMMENT_EDITED,
-/* harmony export */   "PULL_REQUEST_CLOSED": () => /* binding */ PULL_REQUEST_CLOSED,
+/* harmony export */   "PULL_REQUEST_MERGED": () => /* binding */ PULL_REQUEST_MERGED,
 /* harmony export */   "MASTER_BRANCH": () => /* binding */ MASTER_BRANCH
 /* harmony export */ });
 const REVIEW_REQUESTED = 'review_requested'
 const SYNCHRONIZE = 'synchronize'
 const COMMENT_CRETED = 'created'
 const COMMENT_EDITED = 'edited'
-const PULL_REQUEST_CLOSED = 'closed'
+const PULL_REQUEST_MERGED = 'merged'
 const MASTER_BRANCH = 'refs/heads/master'
 
 /***/ }),
@@ -86,7 +86,7 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony export */   "sendComment": () => /* binding */ sendComment,
 /* harmony export */   "sendToStaging": () => /* binding */ sendToStaging,
 /* harmony export */   "sendToMaster": () => /* binding */ sendToMaster,
-/* harmony export */   "sendClosed": () => /* binding */ sendClosed
+/* harmony export */   "sendMerged": () => /* binding */ sendMerged
 /* harmony export */ });
 const { sendNotification } = __nccwpck_require__(7021);
 
@@ -307,7 +307,7 @@ const sendToMaster = async ({ userData, context, octokit }) => {
   return result
 }
 
-const sendClosed = async ({ userData, payload, octokit, context }) => {
+const sendMerged = async ({ userData, payload, octokit, context }) => {
   try {
     const pullRequest = payload.pull_request;
 

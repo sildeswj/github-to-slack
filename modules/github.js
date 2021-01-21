@@ -217,7 +217,7 @@ export const sendToMaster = async ({ userData, context, octokit }) => {
   return result
 }
 
-export const sendClosed = async ({ userData, payload, octokit, context }) => {
+export const sendMerged = async ({ userData, payload, octokit, context }) => {
   try {
     const pullRequest = payload.pull_request;
 
