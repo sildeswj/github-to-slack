@@ -97,52 +97,57 @@ export const sendComment = async ({ userData, payload }) => {
   }
 }
 
-export const sendToStaging = async ({ userData, pullRequest }) => {
-  const requestedBy = userData[pullRequest.user.login]
+export const sendToDevelop = async ({ userData, context, octokit }) => {
+  const { payload } = context;
 
-  const params = {
-    text: "",
-    blocks: [
-      {
-        "type": "header",
-        "text": {
-          "type": "plain_text",
-          "text": "스테이징에 새로운 기능이 올라갔어요 🥳",
-          "emoji": true
-        }
-      },
-      {
-        "type": "context",
-        "elements": [
-          {
-            "type": "plain_text",
-            "text": "5분 정도 뒤에 확인해주세요.",
-            "emoji": true
-          }
-        ]
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: `주인장: <@${requestedBy}>`
-        }
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: pullRequest.body
-        }
-      },
-      {
-        "type": "divider"
-      }
-    ]
-  }
-  const toWhere = 'staging'
-  const result = await sendNotification({ params, toWhere })
-  return result
+  let commits = payload.commits
+  commits = commits.filter(commit => commit.committer.username === 'web-flow')
+
+  console.log('commits: ', commits);
+
+  // const params = {
+  //   text: "",
+  //   blocks: [
+  //     {
+  //       "type": "header",
+  //       "text": {
+  //         "type": "plain_text",
+  //         "text": "스테이징에 새로운 기능이 올라갔어요 🥳",
+  //         "emoji": true
+  //       }
+  //     },
+  //     {
+  //       "type": "context",
+  //       "elements": [
+  //         {
+  //           "type": "plain_text",
+  //           "text": "5분 정도 뒤에 확인해주세요.",
+  //           "emoji": true
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       type: "section",
+  //       text: {
+  //         type: "mrkdwn",
+  //         text: `주인장: <@${requestedBy}>`
+  //       }
+  //     },
+  //     {
+  //       type: "section",
+  //       text: {
+  //         type: "mrkdwn",
+  //         text: pullRequest.body
+  //       }
+  //     },
+  //     {
+  //       "type": "divider"
+  //     }
+  //   ]
+  // }
+  // const toWhere = 'staging'
+  // const result = await sendNotification({ params, toWhere })
+  // return result
 }
 
 export const sendToMaster = async ({ userData, context, octokit }) => {
@@ -217,25 +222,25 @@ export const sendToMaster = async ({ userData, context, octokit }) => {
   return result
 }
 
-export const sendMerged = async ({ userData, payload, octokit, context }) => {
-  try {
-    const pullRequest = payload.pull_request;
+// export const sendClosed = async ({ userData, payload, octokit, context }) => {
+//   try {
+//     const pullRequest = payload.pull_request;
 
-    console.log('pullRequest: ', pullRequest);
+//     console.log('pullRequest: ', pullRequest);
 
-    switch (pullRequest.base.ref) {
-      // pull request closed (develop)
-      case 'develop':
-        sendToStaging({ userData, pullRequest })
-        break;
-      // pull request closed (master)
-      // case 'master':
-      //   sendToMaster({ userData, pullRequest, payload, octokit, context })
-      // break;
-      default:
-        return true;
-    }
-  } catch (err) {
-    throw new Error(err)
-  }
-}
+//     switch (pullRequest.base.ref) {
+//       // pull request closed (develop)
+//       case 'develop':
+//         sendToStaging({ userData, pullRequest })
+//         break;
+//       // pull request closed (master)
+//       // case 'master':
+//       //   sendToMaster({ userData, pullRequest, payload, octokit, context })
+//       // break;
+//       default:
+//         return true;
+//     }
+//   } catch (err) {
+//     throw new Error(err)
+//   }
+// }

@@ -2,8 +2,8 @@ const core = require('@actions/core');
 import * as github from '@actions/github'
 const { context } = require("@actions/github");
 
-const { sendReviewer, sendComment, sendMerged, sendToMaster } = require('./modules/github');
-const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_MERGED, MASTER_BRANCH } = require("./modules/constants");
+const { sendReviewer, sendComment, sendToMaster, sendToDevelop } = require('./modules/github');
+const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, MASTER_BRANCH, DEVELOP_BRANCH } = require("./modules/constants");
 
 const app = async () => {
   try {
@@ -16,8 +16,6 @@ const app = async () => {
     let userData = core.getInput('user-data');
     userData = JSON.parse(userData)
 
-    console.log('payload: ', payload);
-
     if (payload.action === REVIEW_REQUESTED || payload.action === SYNCHRONIZE) {
       const header = payload.action === SYNCHRONIZE ? '다시 해주세요 🔫' : '리뷰 해주세요 🎁'
       sendReviewer({ userData, payload, header });
@@ -25,12 +23,11 @@ const app = async () => {
     else if (payload.action === COMMENT_CRETED || payload.action === COMMENT_EDITED) {
       sendComment({ userData, payload })
     }
-    else if (payload.action === PULL_REQUEST_MERGED) {
-      sendMerged({ userData, payload, octokit, context })
-    }
     // push event
-    else if (payload.pusher && payload.ref === MASTER_BRANCH) {
-      sendToMaster({ userData, octokit, context })
+    else if (payload.pusher) {
+      if (payload.ref === DEVELOP_BRANCH) sendToDevelop({ userData, octokit, context })
+      else if (payload.ref === MASTER_BRANCH) sendToMaster({ userData, octokit, context })
+      else true;
     }
     else {
       return true;

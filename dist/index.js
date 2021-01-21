@@ -13,8 +13,8 @@ const core = __nccwpck_require__(2186);
 
 const { context } = __nccwpck_require__(5438);
 
-const { sendReviewer, sendComment, sendMerged, sendToMaster } = __nccwpck_require__(5738);
-const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, PULL_REQUEST_MERGED, MASTER_BRANCH } = __nccwpck_require__(920);
+const { sendReviewer, sendComment, sendToMaster, sendToDevelop } = __nccwpck_require__(5738);
+const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, MASTER_BRANCH, DEVELOP_BRANCH } = __nccwpck_require__(920);
 
 const app = async () => {
   try {
@@ -27,8 +27,6 @@ const app = async () => {
     let userData = core.getInput('user-data');
     userData = JSON.parse(userData)
 
-    console.log('payload: ', payload);
-
     if (payload.action === REVIEW_REQUESTED || payload.action === SYNCHRONIZE) {
       const header = payload.action === SYNCHRONIZE ? '다시 해주세요 🔫' : '리뷰 해주세요 🎁'
       sendReviewer({ userData, payload, header });
@@ -36,12 +34,11 @@ const app = async () => {
     else if (payload.action === COMMENT_CRETED || payload.action === COMMENT_EDITED) {
       sendComment({ userData, payload })
     }
-    else if (payload.action === PULL_REQUEST_MERGED) {
-      sendMerged({ userData, payload, octokit, context })
-    }
     // push event
-    else if (payload.pusher && payload.ref === MASTER_BRANCH) {
-      sendToMaster({ userData, octokit, context })
+    else if (payload.pusher) {
+      if (payload.ref === DEVELOP_BRANCH) sendToDevelop({ userData, octokit, context })
+      else if (payload.ref === MASTER_BRANCH) sendToMaster({ userData, octokit, context })
+      else true;
     }
     else {
       return true;
@@ -66,15 +63,15 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony export */   "SYNCHRONIZE": () => /* binding */ SYNCHRONIZE,
 /* harmony export */   "COMMENT_CRETED": () => /* binding */ COMMENT_CRETED,
 /* harmony export */   "COMMENT_EDITED": () => /* binding */ COMMENT_EDITED,
-/* harmony export */   "PULL_REQUEST_MERGED": () => /* binding */ PULL_REQUEST_MERGED,
-/* harmony export */   "MASTER_BRANCH": () => /* binding */ MASTER_BRANCH
+/* harmony export */   "MASTER_BRANCH": () => /* binding */ MASTER_BRANCH,
+/* harmony export */   "DEVELOP_BRANCH": () => /* binding */ DEVELOP_BRANCH
 /* harmony export */ });
 const REVIEW_REQUESTED = 'review_requested'
 const SYNCHRONIZE = 'synchronize'
 const COMMENT_CRETED = 'created'
 const COMMENT_EDITED = 'edited'
-const PULL_REQUEST_MERGED = 'merged'
 const MASTER_BRANCH = 'refs/heads/master'
+const DEVELOP_BRANCH = 'refs/heads/develop'
 
 /***/ }),
 
@@ -86,9 +83,8 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
 /* harmony export */   "sendReviewer": () => /* binding */ sendReviewer,
 /* harmony export */   "sendComment": () => /* binding */ sendComment,
-/* harmony export */   "sendToStaging": () => /* binding */ sendToStaging,
-/* harmony export */   "sendToMaster": () => /* binding */ sendToMaster,
-/* harmony export */   "sendMerged": () => /* binding */ sendMerged
+/* harmony export */   "sendToDevelop": () => /* binding */ sendToDevelop,
+/* harmony export */   "sendToMaster": () => /* binding */ sendToMaster
 /* harmony export */ });
 const { sendNotification } = __nccwpck_require__(7021);
 
@@ -189,52 +185,57 @@ const sendComment = async ({ userData, payload }) => {
   }
 }
 
-const sendToStaging = async ({ userData, pullRequest }) => {
-  const requestedBy = userData[pullRequest.user.login]
+const sendToDevelop = async ({ userData, context, octokit }) => {
+  const { payload } = context;
 
-  const params = {
-    text: "",
-    blocks: [
-      {
-        "type": "header",
-        "text": {
-          "type": "plain_text",
-          "text": "스테이징에 새로운 기능이 올라갔어요 🥳",
-          "emoji": true
-        }
-      },
-      {
-        "type": "context",
-        "elements": [
-          {
-            "type": "plain_text",
-            "text": "5분 정도 뒤에 확인해주세요.",
-            "emoji": true
-          }
-        ]
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: `주인장: <@${requestedBy}>`
-        }
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: pullRequest.body
-        }
-      },
-      {
-        "type": "divider"
-      }
-    ]
-  }
-  const toWhere = 'staging'
-  const result = await sendNotification({ params, toWhere })
-  return result
+  let commits = payload.commits
+  commits = commits.filter(commit => commit.committer.username === 'web-flow')
+
+  console.log('commits: ', commits);
+
+  // const params = {
+  //   text: "",
+  //   blocks: [
+  //     {
+  //       "type": "header",
+  //       "text": {
+  //         "type": "plain_text",
+  //         "text": "스테이징에 새로운 기능이 올라갔어요 🥳",
+  //         "emoji": true
+  //       }
+  //     },
+  //     {
+  //       "type": "context",
+  //       "elements": [
+  //         {
+  //           "type": "plain_text",
+  //           "text": "5분 정도 뒤에 확인해주세요.",
+  //           "emoji": true
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       type: "section",
+  //       text: {
+  //         type: "mrkdwn",
+  //         text: `주인장: <@${requestedBy}>`
+  //       }
+  //     },
+  //     {
+  //       type: "section",
+  //       text: {
+  //         type: "mrkdwn",
+  //         text: pullRequest.body
+  //       }
+  //     },
+  //     {
+  //       "type": "divider"
+  //     }
+  //   ]
+  // }
+  // const toWhere = 'staging'
+  // const result = await sendNotification({ params, toWhere })
+  // return result
 }
 
 const sendToMaster = async ({ userData, context, octokit }) => {
@@ -309,28 +310,28 @@ const sendToMaster = async ({ userData, context, octokit }) => {
   return result
 }
 
-const sendMerged = async ({ userData, payload, octokit, context }) => {
-  try {
-    const pullRequest = payload.pull_request;
+// export const sendClosed = async ({ userData, payload, octokit, context }) => {
+//   try {
+//     const pullRequest = payload.pull_request;
 
-    console.log('pullRequest: ', pullRequest);
+//     console.log('pullRequest: ', pullRequest);
 
-    switch (pullRequest.base.ref) {
-      // pull request closed (develop)
-      case 'develop':
-        sendToStaging({ userData, pullRequest })
-        break;
-      // pull request closed (master)
-      // case 'master':
-      //   sendToMaster({ userData, pullRequest, payload, octokit, context })
-      // break;
-      default:
-        return true;
-    }
-  } catch (err) {
-    throw new Error(err)
-  }
-}
+//     switch (pullRequest.base.ref) {
+//       // pull request closed (develop)
+//       case 'develop':
+//         sendToStaging({ userData, pullRequest })
+//         break;
+//       // pull request closed (master)
+//       // case 'master':
+//       //   sendToMaster({ userData, pullRequest, payload, octokit, context })
+//       // break;
+//       default:
+//         return true;
+//     }
+//   } catch (err) {
+//     throw new Error(err)
+//   }
+// }
 
 /***/ }),
 
