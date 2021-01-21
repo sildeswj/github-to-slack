@@ -191,7 +191,16 @@ const sendToDevelop = async ({ userData, context, octokit }) => {
   let commits = payload.commits
   commits = commits.filter(commit => commit.committer.username === 'web-flow')
 
-  console.log('commits: ', commits);
+  const responseAll = commits.map(async commit => {
+    return octokit.repos.listPullRequestsAssociatedWithCommit({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      commit_sha: commit.id,
+    });
+  })
+  let pullRequests = await Promise.all(responseAll)
+
+  console.log('pullRequests: ', pullRequests);
 
   // const params = {
   //   text: "",
