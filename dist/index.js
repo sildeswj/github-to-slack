@@ -311,6 +311,8 @@ const sendMerged = async ({ userData, payload, octokit, context }) => {
   try {
     const pullRequest = payload.pull_request;
 
+    console.log('pullRequest: ', pullRequest);
+
     switch (pullRequest.base.ref) {
       // pull request closed (develop)
       case 'develop':
