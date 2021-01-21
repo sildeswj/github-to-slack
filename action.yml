@@ -17,7 +17,7 @@ inputs:
   staging-webhook-url:
     required: true
   production-webhook-url:
-    required: true
+    required: false
 outputs:
   result: # id of output
     description: "result"
