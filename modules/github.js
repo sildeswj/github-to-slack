@@ -114,51 +114,52 @@ export const sendToDevelop = async ({ userData, context, octokit }) => {
 
   let data = pullRequests[0].data
   data = data[0]
+  const owner = userData[data.user.login]
+  const text = data.body
 
-  console.log('data: ', data);
-  // const params = {
-  //   text: "",
-  //   blocks: [
-  //     {
-  //       "type": "header",
-  //       "text": {
-  //         "type": "plain_text",
-  //         "text": "스테이징에 새로운 기능이 올라갔어요 🥳",
-  //         "emoji": true
-  //       }
-  //     },
-  //     {
-  //       "type": "context",
-  //       "elements": [
-  //         {
-  //           "type": "plain_text",
-  //           "text": "5분 정도 뒤에 확인해주세요.",
-  //           "emoji": true
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       type: "section",
-  //       text: {
-  //         type: "mrkdwn",
-  //         text: `주인장: <@${requestedBy}>`
-  //       }
-  //     },
-  //     {
-  //       type: "section",
-  //       text: {
-  //         type: "mrkdwn",
-  //         text: pullRequest.body
-  //       }
-  //     },
-  //     {
-  //       "type": "divider"
-  //     }
-  //   ]
-  // }
-  // const toWhere = 'staging'
-  // const result = await sendNotification({ params, toWhere })
-  // return result
+  const params = {
+    text: "",
+    blocks: [
+      {
+        "type": "header",
+        "text": {
+          "type": "plain_text",
+          "text": "스테이징에 새로운 기능이 올라갔어요 🥳",
+          "emoji": true
+        }
+      },
+      {
+        "type": "context",
+        "elements": [
+          {
+            "type": "plain_text",
+            "text": "5분 정도 뒤에 확인해주세요.",
+            "emoji": true
+          }
+        ]
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `주인장: <@${owner}>`
+        }
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: text
+        }
+      },
+      {
+        "type": "divider"
+      }
+    ]
+  }
+  const toWhere = 'staging'
+  const result = await sendNotification({ params, toWhere })
+  return result
 }
 
 export const sendToMaster = async ({ userData, context, octokit }) => {
