@@ -316,6 +316,8 @@ const sendToMaster = async ({ userData, context, octokit }) => {
   return result
 }
 
+// If pull request has been closed, this will be fired
+
 // export const sendClosed = async ({ userData, payload, octokit, context }) => {
 //   try {
 //     const pullRequest = payload.pull_request;
