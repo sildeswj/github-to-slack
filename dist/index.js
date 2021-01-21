@@ -5,19 +5,18 @@ module.exports =
 /***/ 2932:
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __nccwpck_require__) => {
 
+// index.js
+
 const core = __nccwpck_require__(2186);
-const github = __nccwpck_require__(5438);
-const { context } = __nccwpck_require__(5438);
+const { context, getOctokit } = __nccwpck_require__(5438);
 const { sendReviewer, sendComment, sendToMaster, sendToDevelop } = __nccwpck_require__(5738);
 const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, MASTER_BRANCH, DEVELOP_BRANCH } = __nccwpck_require__(920);
 
 const app = async () => {
   try {
     const { payload } = context;
-    // const githubRunId = core.getInput('github-run-id');
-
     const githubToken = core.getInput('github-token');
-    const octokit = github.getOctokit(githubToken);
+    const octokit = getOctokit(githubToken);
 
     let userData = core.getInput('user-data');
     userData = JSON.parse(userData)

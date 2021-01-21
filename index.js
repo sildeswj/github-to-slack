@@ -1,16 +1,15 @@
+// index.js
+
 const core = require('@actions/core');
-const github = require('@actions/github');
-const { context } = require("@actions/github");
+const { context, getOctokit } = require("@actions/github");
 const { sendReviewer, sendComment, sendToMaster, sendToDevelop } = require('./modules/github');
 const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, MASTER_BRANCH, DEVELOP_BRANCH } = require("./modules/constants");
 
 const app = async () => {
   try {
     const { payload } = context;
-    // const githubRunId = core.getInput('github-run-id');
-
     const githubToken = core.getInput('github-token');
-    const octokit = github.getOctokit(githubToken);
+    const octokit = getOctokit(githubToken);
 
     let userData = core.getInput('user-data');
     userData = JSON.parse(userData)
