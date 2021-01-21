@@ -196,7 +196,6 @@ export const sendToMaster = async ({ userData, context, octokit }) => {
         // text: `주인장: <@${owner}>\n ${data.body}`
       }
     }
-    console.log('returnValue: ', returnValue);
     return returnValue
   })
   messages.pop();
@@ -229,7 +228,7 @@ export const sendToMaster = async ({ userData, context, octokit }) => {
       }
     ]
   }
-  const toWhere = 'staging'
+  const toWhere = 'production'
   const result = await sendNotification({ params, toWhere })
   return result
 }

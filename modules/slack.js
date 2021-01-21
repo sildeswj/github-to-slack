@@ -3,7 +3,9 @@ const axios = require('axios');
 
 export const sendNotification = async ({ params, toWhere = 'normal' }) => {
   try {
-    const slackWebhookUrl = toWhere === 'normal' ? core.getInput('slack-webhook-url') : core.getInput('staging-webhook-url');
+    let slackWebhookUrl = core.getInput('slack-webhook-url')
+    if (toWhere === 'staging') core.getInput('staging-webhook-url');
+    if (toWhere === 'production') core.getInput('production-webhook-url');
     const result = await axios.post(slackWebhookUrl, JSON.stringify(params), {
       headers: { "Content-Type": "application/json" },
     });

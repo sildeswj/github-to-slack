@@ -278,7 +278,6 @@ const sendToMaster = async ({ userData, context, octokit }) => {
         // text: `주인장: <@${owner}>\n ${data.body}`
       }
     }
-    console.log('returnValue: ', returnValue);
     return returnValue
   })
   messages.pop();
@@ -311,7 +310,7 @@ const sendToMaster = async ({ userData, context, octokit }) => {
       }
     ]
   }
-  const toWhere = 'staging'
+  const toWhere = 'production'
   const result = await sendNotification({ params, toWhere })
   return result
 }
@@ -356,7 +355,9 @@ const axios = __nccwpck_require__(6545);
 
 const sendNotification = async ({ params, toWhere = 'normal' }) => {
   try {
-    const slackWebhookUrl = toWhere === 'normal' ? core.getInput('slack-webhook-url') : core.getInput('staging-webhook-url');
+    let slackWebhookUrl = core.getInput('slack-webhook-url')
+    if (toWhere === 'staging') core.getInput('staging-webhook-url');
+    if (toWhere === 'production') core.getInput('production-webhook-url');
     const result = await axios.post(slackWebhookUrl, JSON.stringify(params), {
       headers: { "Content-Type": "application/json" },
     });
