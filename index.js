@@ -1,7 +1,6 @@
 const core = require('@actions/core');
-import * as github from '@actions/github'
+const github = require('@actions/github');
 const { context } = require("@actions/github");
-
 const { sendReviewer, sendComment, sendToMaster, sendToDevelop } = require('./modules/github');
 const { REVIEW_REQUESTED, SYNCHRONIZE, COMMENT_CRETED, COMMENT_EDITED, MASTER_BRANCH, DEVELOP_BRANCH } = require("./modules/constants");
 
