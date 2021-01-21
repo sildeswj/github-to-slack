@@ -112,8 +112,10 @@ export const sendToDevelop = async ({ userData, context, octokit }) => {
   })
   let pullRequests = await Promise.all(responseAll)
 
-  console.log('pullRequests: ', pullRequests);
+  let data = pullRequests[0].data
+  data = data[0]
 
+  console.log('data: ', data);
   // const params = {
   //   text: "",
   //   blocks: [
